@@ -13,6 +13,10 @@ lista_lineasprod=lineas.Lista_dobleenlazada_lineas()
 lista_productos=productos.Lista_dobleenlazada_producto()
 lista_lista_productos=productos.listaProductos()
 lista_lista_ensambles=productos.listaEnsambles()
+
+Lista_Linea_Resultados=productos.lista_Linea()# CABEZAS DE MI LISTA DE RESULTADOS
+Lista_Compo_Resultados=productos.lista_Componente()#LAS COLUMNAS DE MI LISTA DE LINEAS TODO(ENSAMBLAR,NOHACENADA,MOVER CX)
+
 CantidadLineasProduccion=0
 nombre_simulacion=""
 cont=0
@@ -35,18 +39,20 @@ class loadfile(QWidget):
         self.openFileNameDialog()
     def openFileNameDialog(self): 
         # try: 
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _= QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","XML Files (*.xml);;All Files (*)", options=options)
-        # fileName=r"C:\Users\Sr. C\Google Drive\C U A R T O  S E M E S T R E\L F P  B+\LAB  LFP  B\PROYECTO 1\Codigo Fuente\TEST_FILE.pxla"
+        # options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
+        # fileName, _= QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","XML Files (*.xml);;All Files (*)", options=options)
+        if self.typefile==0:
+            fileName=r"C:\Users\Sr. C\Google Drive\C U A R T O  S E M E S T R E\IPC2 E\LAB IPC2 E\PROYECTO 2\TEST FILES PROJECT 2 IPC2\machine.xml"
+        else:
+            fileName=r"C:\Users\Sr. C\Google Drive\C U A R T O  S E M E S T R E\IPC2 E\LAB IPC2 E\PROYECTO 2\TEST FILES PROJECT 2 IPC2\simulation.xml"
             
         if fileName and self.typefile==0:
             self.readconfiguration(str(fileName))
         elif fileName and self.typefile==1:
             self.readsimulation(str(fileName))
         else:
-            print("Nothing")
-            
+            print("Nothing")            
         # except:
             # print("ERROR POR FAVOR SELECCIONE UNO CORRECTO")
     
@@ -69,14 +75,11 @@ class loadfile(QWidget):
         if self.doc_read:
             # try:
             CantidadLineasProduccion  =  int((root_machine.find('cantidadlineasproduccion').text).rstrip())
-            # ListadoLineasProduccion=root_machine.findall('ListadoLineasProduccion')
-            # ListadoLineasProduccion  =  root_machine.find('ListadoLineasProduccion')
             for listlineas  in  root_machine.findall('listadolineasproduccion'):
                 for lineasprod in listlineas.findall('lineaproduccion'):
                     Numero = (lineasprod.find('numero').text).strip()
                     CantidadComponentes  =  (lineasprod.find('cantidadcomponentes').text).strip()
                     TiempoEnsamblaje  =  (lineasprod.find('tiempoensamblaje').text).strip()
-                    
                     if lista_lineasprod.buscar_linea(Numero)  is  False:
                         new_linea  =  lineas.linea(None, Numero, CantidadComponentes, TiempoEnsamblaje)
                         lista_lineasprod.insertar(new_linea)
@@ -89,8 +92,6 @@ class loadfile(QWidget):
                 print("las lineas de produccion son: " , CantidadLineasProduccion ,  " coincide con la cantidad en la lista de lineas: ",lista_lineasprod.cantidad_lineasproduccion() )
             else:
                 print("La cantidad de Líneas no coincide con la cantidad en la lista de lineas de producción")
-            # ListadoProductos=root_machine.find('ListadoProductos')
-            # ListadoProductos=root_machine.findall('ListadoProductos')
             for listproduct in root_machine.findall('listadoproductos'):
                 for products in listproduct.findall('producto'):
                     nombre=(products.find('nombre').text).strip()
@@ -101,13 +102,11 @@ class loadfile(QWidget):
                     else:
                         print("--> El producto " + nombre + " ya existe en el sistema. No pueden existir 2 productos iguales.")
             lista_productos.recorrer()
-             
+            print("Se han cargado las listas del archivo correctamente :)") 
             # except Exception as e:
             #     print(e)
             #     print(" Ocurrió un error al procesar el archivo. Revisar las etiquetas .\n")
-            print("Se han cargado las listas del archivo correctamente :)")
-
-    
+                
     def readsimulation(self, ruta):
         global lista_productos
         global nombre_simulacion
@@ -128,26 +127,23 @@ class loadfile(QWidget):
 
         if self.doc_2read:
             # try:
-            nombre_simulacion  = str( root_machine.find('nombre').text).strip()
-            # ListadoProductos=root_machine.find('ListadoProductos')
-            # ListadoProductos=root_machine.findall('ListadoProductos')
+            nombre_simulacion  = str( root_machine.find('nombre').text).strip()            
             lista_productos.recorrer()
             for listproduct in root_machine.findall('listadoproductos'):
                 for productindividual in listproduct.findall('producto'):                    
                     producto=(productindividual.text).strip()
                     if lista_productos.buscar_producto(producto)  is  True:
                         lista_lista_productos.insertar_products(cont, producto)
+                        lista_lista_productos.addcombobox(cont, producto)
+                        lista_lista_productos.addcombobox2(cont, producto)                       
                         cont+=1
-
                     else:
                         print("--> El producto " + producto + " no existe en el sistema. El archivo de configuración no lo posee.")
-                        continue
-                
+                        continue                
                     lproducto_actual=lista_lista_productos.return_idyproducto(producto)
                     if lproducto_actual is False:
                         print("No hay ningun producto")
                     else:
-
                         listalistaproducto_actual=lista_productos.returnnombreyensamble(producto)
                         print("hola")
                         if listalistaproducto_actual is False:
@@ -166,36 +162,13 @@ class loadfile(QWidget):
                                     print(f"linea: {c[1]} Componente: {c[4]}")
                                     objetoensamblaje=productos.ensamblaje(c[1], c[4])
                                     lista_lista_ensambles.insertar_ensambles(int(lproducto_actual.id), lista_lista_productos, objetoensamblaje)
-                                    
                                     c=''
                                 i+=1 
             print("")
-            lista_lista_productos.recorrer()
+            lista_lista_productos.recorrer()            
             print("")
             lista_lista_ensambles.mostrar_ensambles(lista_lista_productos,0)
-                                                      
-
             # except Exception as e:
             #     print(e)
             #     print(" Ocurrió un error al procesar el archivo. Revisar las etiquetas .\n")
             print("Se han cargado las listas del archivo correctamente :)")
-
- 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    ex = loadfile(0)
-    sys.exit(app.exec_())
-
-    # def openFileNamesDialog(self): 
-    #     options = QFileDialog.Options()
-    #     options |= QFileDialog.DontUseNativeDialog
-    #     files, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileNames()", "","All Files (*);;Python Files (*.py)", options=options)
-    #     if files:
-    #         print(files)
- 
-    # def saveFileDialog(self):    
-    #     options = QFileDialog.Options()
-    #     options |= QFileDialog.DontUseNativeDialog
-    #     fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()","","All Files (*);;Text Files (*.txt)", options=options)
-    #     if fileName:
-    #         print(fileName)

@@ -1,50 +1,43 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QMovie
+from PyQt5.QtCore import pyqtSlot
 from loadfile import *
-
+import loadfile
+combo=QWidget
+combo2=QWidget
 class Ui_SMARTWATCH_WINDOW(object):
     def __init__(self):
         self.loadedconfig=False
         self.loadedsimulacion=False
     #!▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
     def setupUi(self, SMARTWATCH_WINDOW):
-
         # todo▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   SMARTWATCH  ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄ 
         self.principalwindow(SMARTWATCH_WINDOW)
-
         #! se cargan los gifs
         self.loadgifs()
-
         #! se cargan la tabla
         self.tableensamblaje()
-
         #! se cargan el combobox y el boton
         self.mycombobox()
         #! se carga el widget de proceso de abajo
         self.widgetprocess()  
-
         #! se cargan los cuadros del centro
         self.widgetscomponents()
-
         #! se cargan labels de subtitulos
         self.addlabelsextra()
-
         #! se cargan la barra de estado
         self.statusbar(SMARTWATCH_WINDOW)
 
     def loadgifs(self):
-
         self.LABEL_BACKGROUND = QtWidgets.QLabel(self.centralwidget)
-        self.LABEL_BACKGROUND.setGeometry(QtCore.QRect(0, 0, 981, 531))
+        self.LABEL_BACKGROUND.setGeometry(QtCore.QRect(0, 0, 1150, 550))
         font = QtGui.QFont()
         font.setPointSize(17)
         self.LABEL_BACKGROUND.setFont(font)
         self.LABEL_BACKGROUND.setMidLineWidth(-1)
         self.LABEL_BACKGROUND.setText("")
         self.LABEL_BACKGROUND.setTextFormat(QtCore.Qt.AutoText)
-        # self.LABEL_BACKGROUND.setPixmap(QtGui.QPixmap("Codigo Fuente/images/giphy.gif"))
-
         self.movie=QMovie("Codigo Fuente/images/giphy.gif")
         self.LABEL_BACKGROUND.setMovie(self.movie)
         self.movie.start()
@@ -54,7 +47,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_myicon = QtWidgets.QLabel(self.centralwidget)
         self.lbl_myicon.setGeometry(QtCore.QRect(890, 470, 71, 71))
         self.lbl_myicon.setText("")
-        # self.lbl_myicon.setPixmap(QtGui.QPixmap("../../../../../Pictures/oie_25212249BZ616093.gif"))
         self.movie2=QMovie("../../../../../Pictures/oie_25212249BZ616093.gif")
         self.lbl_myicon.setMovie(self.movie2)
         self.movie2.start()
@@ -63,14 +55,13 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_reloj = QtWidgets.QLabel(self.centralwidget)
         self.lbl_reloj.setGeometry(QtCore.QRect(770, -10, 241, 171))
         self.lbl_reloj.setText("")
-        # self.lbl_reloj.setPixmap(QtGui.QPixmap("Codigo Fuente/images/dribble-clock.gif"))
         self.movie3=QMovie("Codigo Fuente/images/dribble-clock.gif")
         self.lbl_reloj.setMovie(self.movie3)
         self.movie3.start()
         self.lbl_reloj.setScaledContents(True)
         self.lbl_reloj.setObjectName("lbl_reloj")
         self.lbl_SMARTWATCH = QtWidgets.QLabel(self.centralwidget)
-        self.lbl_SMARTWATCH.setGeometry(QtCore.QRect(35, 30, 415, 90))
+        self.lbl_SMARTWATCH.setGeometry(QtCore.QRect(25, 30, 415, 90))
         self.lbl_SMARTWATCH.setText("")
         self.lbl_SMARTWATCH.setPixmap(QtGui.QPixmap("Codigo Fuente/images/cooltext392345411513032.gif"))
         self.lbl_SMARTWATCH.setScaledContents(True)
@@ -81,7 +72,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(910, 150, 101, 71))
         self.label_5.setText("")
-        # self.label_5.setPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"))
         self.movie4=QMovie("Codigo Fuente/images/Gear1.gif")
         self.label_5.setMovie(self.movie4)
         self.movie4.start()
@@ -90,14 +80,12 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_BRAZOROBOTICO = QtWidgets.QLabel(self.centralwidget)
         self.lbl_BRAZOROBOTICO.setGeometry(QtCore.QRect(-90, 200, 361, 321))
         self.lbl_BRAZOROBOTICO.setText("")
-        # self.lbl_BRAZOROBOTICO.setPixmap(QtGui.QPixmap("Codigo Fuente/images/robot.gif"))
         self.lbl_BRAZOROBOTICO.setScaledContents(True)
         self.lbl_BRAZOROBOTICO.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_BRAZOROBOTICO.setObjectName("lbl_BRAZOROBOTICO")
         self.movie6=QMovie("Codigo Fuente/images/robot.gif")
         self.lbl_BRAZOROBOTICO.setMovie(self.movie6)
-        self.movie6.start()   
-
+        self.movie6.start()
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(160, 520, 651, 16))
         self.progressBar.setAutoFillBackground(True)
@@ -107,7 +95,7 @@ class Ui_SMARTWATCH_WINDOW(object):
     def principalwindow(self, SMARTWATCH_WINDOW):
         SMARTWATCH_WINDOW.setObjectName("SMARTWATCH_WINDOW")
         SMARTWATCH_WINDOW.setWindowModality(QtCore.Qt.NonModal)
-        SMARTWATCH_WINDOW.resize(968, 583)
+        SMARTWATCH_WINDOW.resize(1150, 590)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono NL ExtraBold")
         font.setPointSize(14)
@@ -124,21 +112,22 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.centralwidget.setObjectName("centralwidget")
 
     def mycombobox(self):
-
-        self.combo = QtWidgets.QComboBox(self.centralwidget)
-        self.combo.setGeometry(QtCore.QRect(500, 20, 191, 31))
-        self.combo.setObjectName("combo")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.combo.addItem(icon1, "")
-        self.combo.addItem(icon1,"")
-        self.combo.addItem(icon1,"")
-        self.combo.addItem(icon1,"")
-        self.combo.addItem(icon1,"")
-
+        global combo
+        global combo2
+        combo = QtWidgets.QComboBox(self.centralwidget)
+        combo.setGeometry(QtCore.QRect(450, 20, 191, 31))
+        combo.setObjectName("combo")
         self.btn_ensamblar = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_ensamblar.setGeometry(QtCore.QRect(500, 60, 191, 31))
+        self.btn_ensamblar.setGeometry(QtCore.QRect(450, 60, 191, 31))
+        self.btn_ensamblar.clicked.connect(self.ensamblarproductoseleccionado)         
         self.btn_ensamblar.setObjectName("btn_ensamblar")
+        combo2 = QtWidgets.QComboBox(self.centralwidget)
+        combo2.setGeometry(QtCore.QRect(960, 90, 180, 31))
+        combo2.setObjectName("combo2")
+        self.btn_graphviz = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_graphviz.setGeometry(QtCore.QRect(960, 130, 180, 31))
+        self.btn_graphviz.clicked.connect(self.creargraficographviz)         
+        self.btn_graphviz.setObjectName("btn_graphviz")
 
     def tableensamblaje(self):
         self.lcd_time = QtWidgets.QLCDNumber(self.centralwidget)
@@ -147,7 +136,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lcd_time.setObjectName("lcd_time")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(610, 160, 341, 311))
         self.scrollArea.setWidgetResizable(True)
@@ -157,7 +145,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        
         self.table_ensamblaje = QtWidgets.QTableWidget(self.centralwidget)
         self.table_ensamblaje.setGeometry(QtCore.QRect(610, 160, 350, 311))
         self.table_ensamblaje.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
@@ -167,9 +154,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.table_ensamblaje.setIconSize(QtCore.QSize(4, 4))
         self.table_ensamblaje.setGridStyle(QtCore.Qt.SolidLine)
         self.table_ensamblaje.setObjectName("table_ensamblaje")
-        self.table_ensamblaje.setColumnCount(3)
-        
-
 
         # item = QtWidgets.QTableWidgetItem()
         # font = QtGui.QFont()
@@ -187,64 +171,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         # font.setWeight(75)
         # item.setFont(font)
         # self.table_ensamblaje.setVerticalHeaderItem(1, item)
-
-        
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("JetBrains Mono ExtraBold")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("Codigo Fuente/images/clock-alarm-clock.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        item.setIcon(icon2)
-        item.setBackground(QtGui.QColor(128, 130, 249))
-        self.table_ensamblaje.setHorizontalHeaderItem(0, item)
-
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("JetBrains Mono ExtraBold")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        item.setIcon(icon1)
-        item.setBackground(QtGui.QColor(141, 200, 245))
-        self.table_ensamblaje.setHorizontalHeaderItem(1, item)
-
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("JetBrains Mono ExtraBold")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        item.setIcon(icon1)
-        item.setBackground(QtGui.QColor(171, 222, 255))
-        self.table_ensamblaje.setHorizontalHeaderItem(2, item)
-
-
-
-        self.table_ensamblaje.setRowCount(11)
-        for f in range(0,10):
-            for c in range(0,3):
-                item = QtWidgets.QTableWidgetItem()
-                item.setTextAlignment(QtCore.Qt.AlignCenter)
-                font = QtGui.QFont()
-                font.setFamily("JetBrains Mono")
-                font.setPointSize(9)
-                font.setBold(True)
-                font.setItalic(True)
-                font.setWeight(75)
-                font.setKerning(True)
-                item.setFont(font)
-                brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
-                brush.setStyle(QtCore.Qt.NoBrush)
-                item.setBackground(brush)
-                self.table_ensamblaje.setItem(f, c, item)
-                item = self.table_ensamblaje.item(f, c)
-                item.setText("1 segundo")
 
     def widgetprocess(self):
         self.widget_proceso = QtWidgets.QListWidget(self.centralwidget)
@@ -333,8 +259,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.NoBrush)
         item.setForeground(brush)
-        self.widget_components1.addItem(item)
-        
+        self.widget_components1.addItem(item)        
         self.widget_components2 = QtWidgets.QListWidget(self.centralwidget)
         self.widget_components2.setGeometry(QtCore.QRect(390, 180, 181, 171))
         self.widget_components2.setObjectName("widget_components2")
@@ -358,8 +283,10 @@ class Ui_SMARTWATCH_WINDOW(object):
     def addlabelsextra(self):
         self.lbl_componentnecesarios = QtWidgets.QLabel(self.centralwidget)
         self.lbl_componentnecesarios.setGeometry(QtCore.QRect(230, 140, 321, 31))
-        
-        
+        self.lbl_Producto = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_Producto.setGeometry(QtCore.QRect(641, 20, 191, 31))
+        self.lbl_Graficar = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_Graficar.setGeometry(QtCore.QRect(920, 20, 191, 31))
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
         font.setPointSize(18)
@@ -377,8 +304,33 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_componentnecesarios.setObjectName("lbl_componentnecesarios")
         self.lbl_procesorealizado = QtWidgets.QLabel(self.centralwidget)
         self.lbl_procesorealizado.setGeometry(QtCore.QRect(250, 360, 321, 31))
-        
-        
+        fontp = QtGui.QFont()
+        fontp.setFamily("JetBrains Mono")
+        fontp.setPointSize(15)
+        fontp.setBold(True)
+        fontp.setItalic(False)
+        fontp.setWeight(90)
+        self.lbl_Producto.setFont(fontp)
+        self.lbl_Producto.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lbl_Producto.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbl_Producto.setTextFormat(QtCore.Qt.AutoText)
+        self.lbl_Producto.setScaledContents(True)
+        self.lbl_Producto.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_Producto.setWordWrap(False)
+        self.lbl_Producto.setOpenExternalLinks(False)
+        self.lbl_Producto.setObjectName("lbl_producto")
+        self.lbl_Producto.setText("BIENVENIDO! ")
+
+        self.lbl_Graficar.setFont(fontp)
+        self.lbl_Graficar.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lbl_Graficar.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbl_Graficar.setTextFormat(QtCore.Qt.AutoText)
+        self.lbl_Graficar.setScaledContents(True)
+        self.lbl_Graficar.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_Graficar.setWordWrap(False)
+        self.lbl_Graficar.setOpenExternalLinks(False)
+        self.lbl_Graficar.setObjectName("lbl_Graficar")
+        self.lbl_Graficar.setText(" GRAFICAR! ")
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
         font.setPointSize(18)
@@ -394,9 +346,8 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_procesorealizado.setWordWrap(False)
         self.lbl_procesorealizado.setOpenExternalLinks(False)
         self.lbl_procesorealizado.setObjectName("lbl_procesorealizado")
-    
-    def statusbar(self,SMARTWATCH_WINDOW):
 
+    def statusbar(self,SMARTWATCH_WINDOW):
         #!▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
         # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   STATUS BAR   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄ 
         SMARTWATCH_WINDOW.setCentralWidget(self.centralwidget)
@@ -409,7 +360,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.menubar.setFont(font)
         self.menubar.setObjectName("menubar")
-
         #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
         # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   CARGAR ARCHIVOS   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
         self.menuCARGAR_ARCHIVOS = QtWidgets.QMenu(self.menubar)
@@ -420,7 +370,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.menuCARGAR_ARCHIVOS.setFont(font)
         self.menuCARGAR_ARCHIVOS.setObjectName("menuCARGAR_ARCHIVOS")
-
         self.actionARCHIVO_DE_CONFIGURACI_N = QtWidgets.QAction(SMARTWATCH_WINDOW)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
@@ -431,7 +380,6 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.actionARCHIVO_DE_CONFIGURACI_N.setFont(font)
         self.actionARCHIVO_DE_CONFIGURACI_N.setObjectName("actionARCHIVO_DE_CONFIGURACI_N")
         self.actionARCHIVO_DE_CONFIGURACI_N.triggered.connect(self.load_fileconfig)
-
         self.actionARCHIVO_DE_SIMULACI_N = QtWidgets.QAction(SMARTWATCH_WINDOW)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
@@ -442,13 +390,10 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.actionARCHIVO_DE_SIMULACI_N.setFont(font)
         self.actionARCHIVO_DE_SIMULACI_N.setObjectName("actionARCHIVO_DE_SIMULACI_N")
         self.actionARCHIVO_DE_SIMULACI_N.triggered.connect(self.load_filesimulacion)
-
-
         #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
         # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   VER REPORTES   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
         self.menuREPORTES = QtWidgets.QMenu(self.menubar)
         self.menuREPORTES.setObjectName("menuREPORTES")
-
         self.actionREPORTE_DE_SIMULACI_N = QtWidgets.QAction(SMARTWATCH_WINDOW)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
@@ -465,13 +410,10 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionREPORTE_DE_COLA_DE_SECUENCIA.setFont(font)
         self.actionREPORTE_DE_COLA_DE_SECUENCIA.setObjectName("actionREPORTE_DE_COLA_DE_SECUENCIA")
-
-
         #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
         # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   AYUDA   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
         self.menuAYUDA = QtWidgets.QMenu(self.menubar)
         self.menuAYUDA.setObjectName("menuAYUDA")
-
         self.actionINFORMACI_N_PERSONAL = QtWidgets.QAction(SMARTWATCH_WINDOW)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
@@ -489,30 +431,23 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionACERCA_DE.setFont(font)
         self.actionACERCA_DE.setObjectName("actionACERCA_DE")
-
-
-
         SMARTWATCH_WINDOW.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(SMARTWATCH_WINDOW)
         self.statusbar.setObjectName("statusbar")
         SMARTWATCH_WINDOW.setStatusBar(self.statusbar)
-
         #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬       
         self.menuCARGAR_ARCHIVOS.addAction(self.actionARCHIVO_DE_CONFIGURACI_N)
         self.menuCARGAR_ARCHIVOS.addSeparator()
         self.menuCARGAR_ARCHIVOS.addAction(self.actionARCHIVO_DE_SIMULACI_N)
         self.menuCARGAR_ARCHIVOS.addSeparator()
-
         self.menuREPORTES.addAction(self.actionREPORTE_DE_SIMULACI_N)
         self.menuREPORTES.addSeparator()
         self.menuREPORTES.addAction(self.actionREPORTE_DE_COLA_DE_SECUENCIA)
         self.menuREPORTES.addSeparator()
-
         self.menuAYUDA.addAction(self.actionINFORMACI_N_PERSONAL)
         self.menuAYUDA.addSeparator()
         self.menuAYUDA.addAction(self.actionACERCA_DE)
         self.menuAYUDA.addSeparator()
-
         self.menubar.addAction(self.menuCARGAR_ARCHIVOS.menuAction())
         self.menubar.addAction(self.menuREPORTES.menuAction())
         self.menubar.addAction(self.menuAYUDA.menuAction())
@@ -525,45 +460,22 @@ class Ui_SMARTWATCH_WINDOW(object):
 
     def retranslateUi(self, SMARTWATCH_WINDOW):
         _translate = QtCore.QCoreApplication.translate
-        SMARTWATCH_WINDOW.setWindowTitle(_translate("SMARTWATCH_WINDOW", "MainWindow"))
-        # self.combo.setItemText(0, _translate("SMARTWATCH_WINDOW", "New Item"))
-        # self.combo.setItemText(1, _translate("SMARTWATCH_WINDOW", "New Item"))
-        # self.combo.setItemText(2, _translate("SMARTWATCH_WINDOW", "New Item"))
-        # self.combo.setItemText(3, _translate("SMARTWATCH_WINDOW", "New Item"))
-        # self.combo.setItemText(4, _translate("SMARTWATCH_WINDOW", "New Item"))
-
+        SMARTWATCH_WINDOW.setWindowTitle(_translate("SMARTWATCH_WINDOW", "ASSEMBLER 3000 C:"))
         self.btn_ensamblar.setText(_translate("SMARTWATCH_WINDOW", "ENSAMBLAR"))
-        self.table_ensamblaje.setSortingEnabled(False)
-
-        item = self.table_ensamblaje.horizontalHeaderItem(0)
-        item.setText(_translate("SMARTWATCH_WINDOW", "TIEMPO"))
-        item = self.table_ensamblaje.horizontalHeaderItem(1)
-        item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 1"))
-        item = self.table_ensamblaje.horizontalHeaderItem(2)
-        item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 2"))
-        __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
-        self.table_ensamblaje.setSortingEnabled(False)
-
-        # for i in range(0,5):
-        #     for j in range(0,2):
-        
-
-        
-
-        self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
-
-
-
-
+        self.btn_graphviz.setText(_translate("SMARTWATCH_WINDOW", "VER GRÁFICO"))
+        # self.table_ensamblaje.setSortingEnabled(False)
+        # item = self.table_ensamblaje.horizontalHeaderItem(0)
+        # item.setText(_translate("SMARTWATCH_WINDOW", "TIEMPO"))
+        # item = self.table_ensamblaje.horizontalHeaderItem(1)
+        # item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 1"))
+        # item = self.table_ensamblaje.horizontalHeaderItem(2)
+        # item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 2"))
+        # __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
+        # self.table_ensamblaje.setSortingEnabled(False)
+        # self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
         self.widget_proceso.setSortingEnabled(False)
         __sortingEnabled = self.widget_proceso.isSortingEnabled()
         self.widget_proceso.setSortingEnabled(False)
-        
-
-        
-
-
-
         self.widget_proceso.setSortingEnabled(__sortingEnabled)
         __sortingEnabled = self.widget_components1.isSortingEnabled()
         self.widget_components1.setSortingEnabled(False)
@@ -588,27 +500,157 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.actionACERCA_DE.setText(_translate("SMARTWATCH_WINDOW", "ACERCA DE"))
 
     def load_fileconfig(self):
-         
         if self.loadedconfig:
             print("El archivo de configuracion ya se ha cargado")
         else:
-            loadfile(0)
+            loadfile.loadfile(0)
             self.loadedconfig=True
 
     def load_filesimulacion(self):
         global lista_lista_productos
+        global combo
+        global combo2
         if self.loadedsimulacion:
             print("Cargando el archivo de simulación, otra vez...")
-            loadfile(1)
+            loadfile.loadfile(1)            
         else:
-            loadfile(1)
+            loadfile.loadfile(1)
             self.loadedsimulacion=True
+        combo.activated[str].connect(self.onChanged) 
+        combo2.activated[str].connect(self.onChanged2) 
 
-        # for l in lista_lista_productos.:
-        #     t=str(list[l][0]) 
-        #     t = re.sub("\"","",t)           
-        #     self.comboBox.addItem(t)
-        #     a=showoriginal()
-        #     print(len(list))
-        # a.genoriginal(list)
+    def onChanged(self, text):
+        self.lbl_Producto.setText(text)
+        self.lbl_Producto.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbl_Producto.adjustSize()
+
+    def onChanged2(self, text):
+        self.lbl_Graficar.setText(text)
+        self.lbl_Graficar.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbl_Graficar.adjustSize()
+
+
+    def ensamblarproductoseleccionado(self):
+        global lista_lista_productos
+        global lista_lista_ensambles
+        nameproducto=self.lbl_Producto.text()
+        lista_lista_ensambles.llenarListaLineas(lista_lista_productos, nameproducto)
+        self.agregardatos_tabla()
+        print(nameproducto)
+
+    def creargraficographviz(self):
+        global lista_lista_productos
+        global lista_lista_ensambles
+        nameproducto=self.lbl_Graficar.text()
+        lista_lista_ensambles.generarGRAPHVIZ(lista_lista_productos, nameproducto)
+        print(nameproducto)
+
+    def agregardatos_tabla(self):
+        Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
+        Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
+        columnas=Lista_Linea_Resultados.cantidad_lineas()
+        self.table_ensamblaje.setColumnCount(int(columnas)+1)
+
+
+        item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("JetBrains Mono ExtraBold")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("Codigo Fuente/images/clock-alarm-clock.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        item.setIcon(icon2)
+        item.setBackground(QtGui.QColor(128, 130, 249))
+        self.table_ensamblaje.setHorizontalHeaderItem(0, item)
+        item = self.table_ensamblaje.horizontalHeaderItem(0)
+        item.setText("TIEMPO")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        cont=1
+        columnast=int(columnas)
+        self.table_ensamblaje.setRowCount(50)
+        seconds=1
+        for f in range(50):
+            item = QtWidgets.QTableWidgetItem()
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            font = QtGui.QFont()
+            font.setFamily("JetBrains Mono")
+            font.setPointSize(9)
+            font.setBold(True)
+            font.setItalic(True)
+            font.setWeight(75)
+            font.setKerning(True)
+            item.setFont(font)
+            brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
+            brush.setStyle(QtCore.Qt.NoBrush)
+            item.setBackground(brush)
+            self.table_ensamblaje.setItem(f, 0, item)
+            item = self.table_ensamblaje.item(f, 0)
+            item.setText(f"{seconds} seg. ")
+            seconds+=1
+
+        while cont <= columnast  :
+            #aquí iria el ordenamiento burbuja de las lineas
+            lineatext=Lista_Linea_Resultados.buscar_lineapor_id(cont-1)
+            item = QtWidgets.QTableWidgetItem()
+            font = QtGui.QFont()
+            font.setFamily("JetBrains Mono ExtraBold")
+            font.setPointSize(12)
+            font.setBold(True)
+            font.setWeight(75)
+            item.setFont(font)
+            item.setIcon(icon1)
+            item.setBackground(QtGui.QColor(141, 200, 245))
+            self.table_ensamblaje.setHorizontalHeaderItem(cont, item)
+            item = self.table_ensamblaje.horizontalHeaderItem(cont)
+            item.setText("Linea "+str(lineatext))
+            # filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, cont-1))
+            self.table_ensamblaje.setRowCount(9)
+            # print("FILAS: ", filas)
+            for c in range(9):
+                item = QtWidgets.QTableWidgetItem()
+                item.setTextAlignment(QtCore.Qt.AlignCenter)
+                font = QtGui.QFont()
+                font.setFamily("JetBrains Mono")
+                font.setPointSize(9)
+                font.setBold(True)
+                font.setItalic(True)
+                font.setWeight(75)
+                font.setKerning(True)
+                item.setFont(font)
+                brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
+                brush.setStyle(QtCore.Qt.NoBrush)
+                item.setBackground(brush)
+                self.table_ensamblaje.setItem(c, cont, item)
+                item = self.table_ensamblaje.item(c, cont)
+                item.setText("1 segundo")
+            cont+=1
+
+        self.table_ensamblaje.setSortingEnabled(False)
+        __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
+        self.table_ensamblaje.setSortingEnabled(False)
+        self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
+
+        # self.table_ensamblaje.setRowCount(11)
+        # for f in range(0,10):
+        #     for c in range(0,3):
+        #         item = QtWidgets.QTableWidgetItem()
+        #         item.setTextAlignment(QtCore.Qt.AlignCenter)
+        #         font = QtGui.QFont()
+        #         font.setFamily("JetBrains Mono")
+        #         font.setPointSize(9)
+        #         font.setBold(True)
+        #         font.setItalic(True)
+        #         font.setWeight(75)
+        #         font.setKerning(True)
+        #         item.setFont(font)
+        #         brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
+        #         brush.setStyle(QtCore.Qt.NoBrush)
+        #         item.setBackground(brush)
+        #         self.table_ensamblaje.setItem(f, c, item)
+        #         item = self.table_ensamblaje.item(f, c)
+        #         item.setText("1 segundo")
+
 
