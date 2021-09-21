@@ -137,7 +137,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollArea.setGeometry(QtCore.QRect(610, 160, 341, 311))
+        self.scrollArea.setGeometry(QtCore.QRect(610, 180, 530, 311))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -146,7 +146,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.table_ensamblaje = QtWidgets.QTableWidget(self.centralwidget)
-        self.table_ensamblaje.setGeometry(QtCore.QRect(610, 160, 350, 311))
+        self.table_ensamblaje.setGeometry(QtCore.QRect(610, 180, 530, 341))
         self.table_ensamblaje.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.table_ensamblaje.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.table_ensamblaje.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
@@ -529,13 +529,13 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_Graficar.setStyleSheet("color: rgb(255, 255, 255);")
         self.lbl_Graficar.adjustSize()
 
-
     def ensamblarproductoseleccionado(self):
         global lista_lista_productos
         global lista_lista_ensambles
         nameproducto=self.lbl_Producto.text()
         lista_lista_ensambles.llenarListaLineas(lista_lista_productos, nameproducto)
         self.agregardatos_tabla()
+        # self.generarHTMLTokens()
         print(nameproducto)
 
     def creargraficographviz(self):
@@ -548,10 +548,11 @@ class Ui_SMARTWATCH_WINDOW(object):
     def agregardatos_tabla(self):
         Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
         Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
+        Matriz_Resultados=loadfile.Matriz_Resultados
         columnas=Lista_Linea_Resultados.cantidad_lineas()
         self.table_ensamblaje.setColumnCount(int(columnas)+1)
 
-
+        filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, 1))
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono ExtraBold")
@@ -570,9 +571,9 @@ class Ui_SMARTWATCH_WINDOW(object):
         icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         cont=1
         columnast=int(columnas)
-        self.table_ensamblaje.setRowCount(50)
+        self.table_ensamblaje.setRowCount(filas)
         seconds=1
-        for f in range(50):
+        for f in range(filas):
             item = QtWidgets.QTableWidgetItem()
             item.setTextAlignment(QtCore.Qt.AlignCenter)
             font = QtGui.QFont()
@@ -606,51 +607,95 @@ class Ui_SMARTWATCH_WINDOW(object):
             self.table_ensamblaje.setHorizontalHeaderItem(cont, item)
             item = self.table_ensamblaje.horizontalHeaderItem(cont)
             item.setText("Linea "+str(lineatext))
-            # filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, cont-1))
-            self.table_ensamblaje.setRowCount(9)
+
+            self.table_ensamblaje.setRowCount(filas)
             # print("FILAS: ", filas)
-            for c in range(9):
-                item = QtWidgets.QTableWidgetItem()
-                item.setTextAlignment(QtCore.Qt.AlignCenter)
-                font = QtGui.QFont()
-                font.setFamily("JetBrains Mono")
-                font.setPointSize(9)
-                font.setBold(True)
-                font.setItalic(True)
-                font.setWeight(75)
-                font.setKerning(True)
-                item.setFont(font)
-                brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
-                brush.setStyle(QtCore.Qt.NoBrush)
-                item.setBackground(brush)
-                self.table_ensamblaje.setItem(c, cont, item)
-                item = self.table_ensamblaje.item(c, cont)
-                item.setText("1 segundo")
+            filast=Lista_Compo_Resultados.return_idycomponente(Lista_Linea_Resultados, cont-1)
+            temp=filast.abajo
+            for c in range(filas):
+                if temp != None:
+                    item = QtWidgets.QTableWidgetItem()
+                    item.setTextAlignment(QtCore.Qt.AlignCenter)
+                    font = QtGui.QFont()
+                    font.setFamily("JetBrains Mono")
+                    font.setPointSize(8)
+                    font.setBold(True)
+                    font.setItalic(True)
+                    font.setWeight(75)
+                    font.setKerning(True)
+                    item.setFont(font)
+                    brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
+                    brush.setStyle(QtCore.Qt.NoBrush)
+                    item.setBackground(brush)
+                    self.table_ensamblaje.setItem(c, cont, item)
+                    item = self.table_ensamblaje.item(c, cont)
+                    item.setText(str(temp.componente))
+                    Matriz_Resultados.insert(cont, c, str(temp.componente))
+                    temp=temp.abajo
             cont+=1
 
         self.table_ensamblaje.setSortingEnabled(False)
         __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
         self.table_ensamblaje.setSortingEnabled(False)
         self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
-
-        # self.table_ensamblaje.setRowCount(11)
-        # for f in range(0,10):
-        #     for c in range(0,3):
-        #         item = QtWidgets.QTableWidgetItem()
-        #         item.setTextAlignment(QtCore.Qt.AlignCenter)
-        #         font = QtGui.QFont()
-        #         font.setFamily("JetBrains Mono")
-        #         font.setPointSize(9)
-        #         font.setBold(True)
-        #         font.setItalic(True)
-        #         font.setWeight(75)
-        #         font.setKerning(True)
-        #         item.setFont(font)
-        #         brush = QtGui.QBrush(QtGui.QColor(168, 199, 249))
-        #         brush.setStyle(QtCore.Qt.NoBrush)
-        #         item.setBackground(brush)
-        #         self.table_ensamblaje.setItem(f, c, item)
-        #         item = self.table_ensamblaje.item(f, c)
-        #         item.setText("1 segundo")
+        Matriz_Resultados.generarHTML_individual()
 
 
+    # def generarHTMLindividual(self):
+    #     Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
+    #     Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
+    #     contenido = ''
+    #     htmlFile = open("Reportes/Reporte_EJEMPLO" + ".html", "w", encoding='utf-8')
+    #     htmlFile.write("""
+    #         <!DOCTYPE html>
+    #         <html lang="en" >
+    #         <head>
+    #         <meta charset="UTF-8">
+    #         <title>CodePen - &lt;Table&gt; Responsive</title>
+    #         <link rel="stylesheet" href="./style.css">
+
+    #         </head>
+    #         <body>
+    #         <!-- partial:index.partial.html -->
+    #         <h1><span class="blue">&lt;</span>Reporte<span class="blue">&gt;</span> <span class="yellow"> de Tokens</pan></h1>
+    #         <h2>  <a href="https://github.com/Alvaro-SP" target="_blank">Lista de Tokens</a></h2>
+
+    #         <table class="container">
+    #         <thead>
+    #           <tr>
+
+    #             <th>Tiempo</th>
+    #             """
+    #           )
+    #     columnas=int(Lista_Linea_Resultados.cantidad_lineas())
+    #     filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, 1))
+    #     cont1=1
+    #     while cont1 <= filas:
+    #         htmlFile.write("<tr>\n")
+    #         cont2=1
+    #         while cont2 <= columnas:
+    #             valor = str(self.table_ensamblaje.item(cont1, cont2).text())
+    #             htmlFile.write("          <th>"+valor+"</th>")
+    #             cont2+=1
+    #         htmlFile.write("</tr>\n")
+    #         cont1+=1
+
+
+
+    #     htmlFile.write("""
+    #             </tr>
+    #             </thead>
+    #             <tbody>
+    #         """)
+
+
+
+    #     htmlFile.write(contenido)
+    #     htmlFile.write("""
+    #     </tbody>
+    #      </table>
+    #         <!-- partial -->
+    #     <script  src="./script.js"></script>
+    #     </body>
+    #     </html>""")
+    #     htmlFile.close

@@ -13,6 +13,7 @@ lista_lineasprod=lineas.Lista_dobleenlazada_lineas()
 lista_productos=productos.Lista_dobleenlazada_producto()
 lista_lista_productos=productos.listaProductos()
 lista_lista_ensambles=productos.listaEnsambles()
+Matriz_Resultados=productos.matriz()
 
 Lista_Linea_Resultados=productos.lista_Linea()# CABEZAS DE MI LISTA DE RESULTADOS
 Lista_Compo_Resultados=productos.lista_Componente()#LAS COLUMNAS DE MI LISTA DE LINEAS TODO(ENSAMBLAR,NOHACENADA,MOVER CX)
