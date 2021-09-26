@@ -4,8 +4,11 @@ from lineas import *
 from ventana import *
 import ventana
 import loadfile
+import time
 import os
-
+import loadfile
+import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 #!OBJETOS
 class producto:
@@ -29,7 +32,7 @@ class Node:
         self.abajo = abajo
         self.arriba=arriba
 class NodeLista: 
-    def __init__(self, ensamblaje= None, arriba = None, abajo=None):
+    def __init__(self, ensamblaje= None,arriba = None, abajo=None):
         self.ensamblaje = ensamblaje
         self.arriba=arriba
         self.abajo = abajo
@@ -54,12 +57,12 @@ class listaProductos:
             # self.cabecera.anterior=producto_actual.anterior
             # primer_producto.next = Node(id=id, producto=producto , anterior=producto_actual)
             self.cabecera=producto_actual
-            
-        else: 
+
+        else:
             producto_actual=Node(id=id, producto=producto)
             self.cabecera = producto_actual
             # self.cabecera.anterior=producto_actual
-                
+
     def recorrer(self):
         if self.cabecera is None:
             print("List has no element")
@@ -69,7 +72,7 @@ class listaProductos:
         while producto_actual.siguiente:
             producto_actual=producto_actual.siguiente
             print("ID del producto: ", producto_actual.id, "   Nombre : ", producto_actual.producto,"-->")
-    
+
     def cantidad_productos(self):
         contador_productos=0
         if self.cabecera is None:
@@ -89,7 +92,7 @@ class listaProductos:
             else:
                 producto_actual=producto_actual.siguiente
         return False
-   
+
     def return_idyproducto(self, name):
         producto_actual=self.cabecera
         while producto_actual is not None:
@@ -98,18 +101,18 @@ class listaProductos:
             else:
                 producto_actual=producto_actual.siguiente
         return False
-    
+
     def addcombobox(self, iditem, nameitem):
 
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Gear1.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                              
+
         ventana.combo.addItem(icon1,str(nameitem))
     def addcombobox2(self, iditem, nameitem):
 
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Codigo Fuente/images/descargar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                              
+
         ventana.combo2.addItem(icon1,str(nameitem))
 #! Lista en listas
 class listaEnsambles:
@@ -182,14 +185,63 @@ class listaEnsambles:
             cont+=1
             temp = temp.abajo
         print('Null')
+        # listalista_lineas.bubblesort()
+        listalista_componentes.calculoTiempoOptimizado(listalista_lineas, nameproducto)
+        # except Exception as e:
+        #     print("List index out of range :( ")
+        #     print(e)  
+    
+
+    def llenarListaLineas2(self, Product_a_optimizar,namesimulacion,nameproducto):
+        # try: 
+        listalista_lineas=lista_Linea()
+        listalista_componentes=lista_Componente()
+        listaCabecera = Product_a_optimizar.cabecera 
+        while listaCabecera.producto != str(nameproducto):
+            listaCabecera = listaCabecera.siguiente
+        print(listaCabecera.producto)
+        cont=0
+        temp = listaCabecera.abajo
+        while temp != None:
+            print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end='->')
+
+            listalista_lineas.insertar_lineas(cont, temp.ensamblaje.line)
+            listalista_componentes.insertar_componente(cont, listalista_lineas, temp.ensamblaje.component)
+            cont+=1
+            temp = temp.abajo
+        print('Null')
+        # listalista_lineas.bubblesort()
+        listalista_componentes.calculoTiempoOptimizadoSimulacion(listalista_lineas,namesimulacion, nameproducto)
+        # except Exception as e:
+        #     print("List index out of range :( ")
+        #     print(e)  
+    
+    def llenarListaLineasSimulacion(self, Product_a_optimizar,nameproducto):
+        # try: 
+        listalista_lineas=lista_Linea()
+        listalista_componentes=lista_Componente()
+        listaCabecera = Product_a_optimizar.cabecera 
+        while listaCabecera.producto != str(nameproducto):
+            listaCabecera = listaCabecera.siguiente
+        print(listaCabecera.producto)
+        cont=0
+        temp = listaCabecera.abajo
+        while temp != None:
+            print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end='->')
+
+            listalista_lineas.insertar_lineas(cont, temp.ensamblaje.line)
+            listalista_componentes.insertar_componente(cont, listalista_lineas, temp.ensamblaje.component)
+            cont+=1
+            temp = temp.abajo
+        print('Null')
+        # listalista_lineas.bubblesort()
         listalista_componentes.calculoTiempoOptimizado(listalista_lineas, listalista_componentes)
         # except Exception as e:
         #     print("List index out of range :( ")
         #     print(e)  
 
     def generarGRAPHVIZ(self, lista, producto):
-       
-        listaCabecera = lista.cabecera 
+        listaCabecera = lista.cabecera
         while listaCabecera.producto != str(producto):
             listaCabecera = listaCabecera.siguiente
         if listaCabecera:
@@ -198,19 +250,19 @@ class listaEnsambles:
             print('list index out of range')
         productotext= str(listaCabecera.producto).strip()
         graphtext="""
-        digraph grid{	               
-            layout=dot   
-            fontcolor="black" 
-            label=" """+str(listaCabecera.producto)+"""  " 
+        digraph grid{
+            layout=dot
+            fontcolor="black"
+            label=" """+str(listaCabecera.producto)+"""  "
             labelloc = "t"
-            bgcolor="yellow:orange"                
+            bgcolor="yellow:orange"
             edge [weight=1000 style=bold color=black]
             node[shape=square style="filled"  color="green:cyan" gradientangle="315"]
             \n
             rank=same{"""
-        temp = listaCabecera.abajo       
+        temp = listaCabecera.abajo
         while temp != None:
-            print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end='->')
+            print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end=' -> ')
             Nodotext="L"+str(temp.ensamblaje.line)+"C"+str(temp.ensamblaje.component)
             graphtext+=str(Nodotext)+"->"
             temp = temp.abajo
@@ -219,7 +271,7 @@ class listaEnsambles:
             graphtext=graphtext.rstrip(graphtext[-1])
             graphtext=graphtext.rstrip(graphtext[-1])
             graphtext+="""}}"""
-            productotext=productotext.replace(" ","")           
+            productotext=productotext.replace(" ","")
             file=open('Graficos_generados/Grafico_'+str(productotext)+'.dot','w')
             file.write(graphtext)
             file.close()
@@ -229,7 +281,70 @@ class listaEnsambles:
         except Exception:
             print("\033[1;31m"+"\nUps... algo salió mal :( podria haber un error, intentelo nevamente\n"+'\033[0;m')     
             return False
-
+    
+    def generarReporteSecuencia(self, lista, producto, lineasambled, componentesambled):
+        listaCabecera = lista.cabecera
+        while listaCabecera.producto != str(producto):
+            listaCabecera = listaCabecera.siguiente
+        if listaCabecera:
+            print('El producto es: ',listaCabecera.producto)
+        else:
+            print('list index out of range')
+        productotext= str(listaCabecera.producto).strip()
+        graphtext="""
+        digraph grid{
+            layout=dot
+            fontcolor="black"
+            label=" Reporte de Secuencia del Producto -->"""+str(listaCabecera.producto)+"""  "
+            labelloc = "t"
+            bgcolor="yellow:orange"
+            edge [weight=1000 style=bold color=black]
+            node[shape=square style="filled"  color="green:cyan" gradientangle="315"]
+            \n
+            rank=same{"""
+        temp = listaCabecera.abajo
+        while temp != None:
+            print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end=' -> ')
+            Nodotext="L"+str(temp.ensamblaje.line)+"C"+str(temp.ensamblaje.component)
+            graphtext+=str(Nodotext)+"->"
+            if int(temp.ensamblaje.line) ==int(lineasambled) and int(temp.ensamblaje.component)==int(componentesambled):
+                break
+            temp = temp.abajo
+        print('Null')
+        try:
+            graphtext=graphtext.rstrip(graphtext[-1])
+            graphtext=graphtext.rstrip(graphtext[-1])
+            graphtext+="""}}"""
+            productotext=productotext.replace(" ","")
+            file=open('Graficos_generados/Grafico_'+str(productotext)+'.dot','w')
+            file.write(graphtext)
+            file.close()
+            os.system('dot -Tpng Graficos_generados/Grafico_'+str(productotext)+'.dot -o Graficos_generados/graficoimagen_'+str(productotext)+'.png')
+            os.startfile(r"Graficos_generados\graficoimagen_"+str(productotext)+".png")
+            print("\033[1;32m"+"\nSe ha generado el gráfico" +str(productotext)+ "con éxito... \n"+'\033[0;m')
+        except Exception:
+            print("\033[1;31m"+"\nUps... algo salió mal :( podria haber un error, intentelo nevamente\n"+'\033[0;m')     
+            return False
+    
+    #!ACLARO: aqui se usa una lista dado que es para la interfaz gráfica no es parte de la lógica del programa
+    #!solo recopilo datos :)
+    def obtener_datos_mostrar(self,lista, producto):
+        listadeensambles=[]
+        listaCabecera = lista.cabecera
+        while listaCabecera.producto != str(producto):
+            listaCabecera = listaCabecera.siguiente
+        if listaCabecera:
+            print('El producto es: ',listaCabecera.producto)
+        else:
+            print('list index out of range')
+        productotext= str(listaCabecera.producto).strip()
+        temp = listaCabecera.abajo
+        while temp != None :
+            # print(temp.ensamblaje.line, " con ", temp.ensamblaje.component, end='->')
+            Nodotext="L"+str(temp.ensamblaje.line)+"C"+str(temp.ensamblaje.component)
+            listadeensambles.append(Nodotext)
+            temp = temp.abajo
+        return listadeensambles
 #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   LINEA - COMPONENTE  ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
 #! Lista en listas de LINEAS tienen COMPONENTES como lista dobleenlazada en cascada
@@ -332,6 +447,23 @@ class lista_Linea:
                 linea_actual=linea_actual.siguiente
         return False
 
+    def bubblesort(self):
+        linea_actual=self.lineascabeza
+        #! FORMA DESCENDENTE DE MAYOR A MENOR ES  <
+        #! FORMA ASCENDENTE DE MENOR A MAYOR ES  >
+        while linea_actual!=None :
+            next=linea_actual.siguiente
+            while next!=None:
+                if int(linea_actual.linea)>int(next.linea):
+                    aux=int(linea_actual.linea)
+                    # aux2=int(linea_actual.id)
+                    linea_actual.linea=int(next.linea)
+                    # linea_actual.id=next.id
+                    # print(linea_actual.linea)
+                    # next.id=aux2
+                    next.linea=aux
+                next=next.siguiente
+            linea_actual=linea_actual.siguiente
 #todo Lista en listas de lineas
 class lista_Componente:
     def __init__(self):
@@ -487,15 +619,18 @@ class lista_Componente:
         temp = listaComponentecabeza
         return temp
 
-    def calculoTiempoOptimizado(self, lista, listcomponent):
+    def calculoTiempoOptimizado(self, lista, nameproduct):
         print("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
         Lista_lineatodos_duplicado=lista_lineasduplicadas() #todas las lineas a de ensamble duplicadas
         Lista_Dondequedo=lista_Dondesequedo() #temporales en donde quedo de ultimo
         lista_Yaensamblo=lista_Yaseensamblo() #temporales si ya se ensamblo o no
-        Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
-        Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
+        Lista_Linea_Resultados=lista_Linea()
+        Lista_Compo_Resultados=lista_Componente()
+        lista_tiempos=lista_Tiempos()
         listaMadre1=lista.lineascabeza
         longitud_resultado=0
+        contadortiempo=0
+        Matriz_Resultados=loadfile.Matriz_Resultados
         #se llena la lista que contendrá el #todo resultado de las operaciones
         contadorinsercion=0
         while listaMadre1 != None:
@@ -506,8 +641,9 @@ class lista_Componente:
                 longitud_resultado+=1
                 contadorinsercion+=1
             listaMadre1=listaMadre1.siguiente
-        #se llena la lista duplicada de lineas y sus componentes para el proceso
-        Lista_Dondequedo.recorrer_lineas()
+        # Lista_Linea_Resultados.recorrer_lineas()
+        print("ORDENAMIENTO BURBUJA DE LA LISTA DE LINEAS CABEZA")# Lista_Linea_Resultados.bubblesort()
+        # Lista_Linea_Resultados.recorrer_lineas()
         listaMadre2=lista.lineascabeza
         while listaMadre2 != None:
             temporalcomponentdupli=listaMadre2.abajo
@@ -515,78 +651,95 @@ class lista_Componente:
             listaMadre2=listaMadre2.siguiente
 
         listaMadre=lista.lineascabeza
+        # Lista_Linea_Resultados.bubblesort()
         while listaMadre!=None: #!RECORRE LA LISTA MADRE DE TODOS
             obtain_sequedo= int(Lista_Dondequedo.buscar_dondesequedo(listaMadre.linea))
-            obtain_seensaamblo=lista_Yaensamblo.buscar_yaseensamblo(listaMadre.linea)
+            # obtain_seensaamblo=lista_Yaensamblo.buscar_yaseensamblo(listaMadre.linea)
             tiempo_ensamble =  loadfile.lista_lineasprod.buscar_tiempo_linea(listaMadre.linea)
             temporalcomponent=listaMadre.abajo
             lineaMayor=listaMadre.linea
             componente_a_llegar = int(temporalcomponent.componente)
             cont=0
-            print("Componente a llegar: " + str(componente_a_llegar))
-            print("Donde se quedo : " + str(obtain_sequedo))
-            if obtain_sequedo < componente_a_llegar:
-                while obtain_sequedo <componente_a_llegar: # si quedo es menor a llegar se suma hasta que se igualen
+            print("◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘ ")
+            print("             Línea:  ", listaMadre.linea)
+            print("Donde se quedo al inicio :      " + str(obtain_sequedo))
+            if obtain_sequedo == componente_a_llegar:
+                cont=0
+            elif obtain_sequedo < componente_a_llegar:
+                while obtain_sequedo < componente_a_llegar: # si quedo es menor a llegar se suma hasta que se igualen
                     obtain_sequedo+=1
                     cont+=1
             elif obtain_sequedo > componente_a_llegar: 
                 while obtain_sequedo > componente_a_llegar: # si quedo es mayor a llegar se resta uno hasta que se igualen
                     obtain_sequedo-=1
                     cont+=1
-
-            correrfilas= int(cont)+int(tiempo_ensamble)#cantidad de filas que recorrerá cada lista actual
-            print("     ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬    correrfilas: ", correrfilas)
-            print("             tiempoensamble: ", tiempo_ensamble)
-            print("             contador: ", cont)
+            correrfilas= int(cont)+int(tiempo_ensamble)-1#cantidad de filas que recorrerá cada lista actual
+            print("Donde se quedo despues :      " + str(obtain_sequedo))
+            print("Componente a llegar:  " + str(componente_a_llegar))
+            print("Filas que se corren:  ", correrfilas)
+            print("Tiempo de ensamble:   ", tiempo_ensamble)
+            print("Contador a sumar:     ", cont)
             listaactual=Lista_Linea_Resultados.lineascabeza
             correrfilas1=int(cont)+int(tiempo_ensamble)
-            # print("☻☻☻☻☻☻☻☻☻☻☻☻    componente a llegar: ",componente_a_llegar, "lineaMayor: ", lineaMayor, " Donde se quedó: ", obtain_sequedo)
             while listaactual!= None: #!RECORRE LA LISTA DE RESULTADOS
+                print("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
                 lineaactual=listaactual.linea
                 idlineaactual=listaactual.id
                 haylineasiguiente, lineasiguiente, idlineasiguiente=lista.buscar_sig_actual(idlineaactual)
-                if lineasiguiente!=None:
-                    componente_a_llegar_next=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineasiguiente)
+                if haylineasiguiente:
+                    componente_a_llegar_next=int(Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineasiguiente))
                 else:
                     componente_a_llegar_next=False
-                obtain_sequedo2=Lista_Dondequedo.buscar_dondesequedo(lineaactual)                 
+                obtain_sequedo2=Lista_Dondequedo.buscar_dondesequedo(lineaactual)
+                print("Línea actual: ", lineaactual,"Se quedo en: ", obtain_sequedo2, "hay siguiente: ", haylineasiguiente, "componente_a_llegar_next; ",componente_a_llegar_next)
                 # print("OBTAIN SEQUEDO 2: ", obtain_sequedo2, "Componente a llegar next: ", componente_a_llegar_next, "componente_allegar: ", componente_a_llegar)
-
                 if   int(lineaactual) == int(lineaMayor) and  lista_Yaensamblo.buscar_yaseensamblo(lineaactual)=="primero":# and lista_Yaensamblo.buscar_yaseensamblo(lineaactual):
-                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                    # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                     iteration=0
                     if obtain_sequedo2 < componente_a_llegar:
                         while obtain_sequedo2 <= componente_a_llegar and iteration!=correrfilas1:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                             obtain_sequedo2+=1
                             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                             iteration+=1
                         while iteration!=correrfilas1:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
                             # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                             iteration+=1
                         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        contadortiempo+=1
+                        lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                         # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                     else:
                         while obtain_sequedo2 >= componente_a_llegar and iteration!=correrfilas1:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                             obtain_sequedo2-=1
                             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                             iteration+=1
                         while iteration!=correrfilas1:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
                             # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                             iteration+=1
                         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        contadortiempo+=1
+                        lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
                         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
 
                 elif int(lineaactual) != int(lineaMayor) and  lista_Yaensamblo.buscar_yaseensamblo(lineaactual)=="primero":
-                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                    # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                     iteration=0
                     if obtain_sequedo2 < componente_a_llegar_next and componente_a_llegar_next!=False:
                         while obtain_sequedo2 <= componente_a_llegar_next and iteration!=correrfilas1:
@@ -608,6 +761,15 @@ class lista_Componente:
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                             iteration+=1
                         while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                    elif obtain_sequedo2==componente_a_llegar_next:
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))
+                        obtain_sequedo2+=1
+                        Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        while iteration!=correrfilas1-1:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
                             iteration+=1
                         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
@@ -665,31 +827,43 @@ class lista_Componente:
                             while iteration!=correrfilas:
                                 Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
                                 iteration+=1
-                        elif componente_a_llegar_next==False:
-                            componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
+                        elif obtain_sequedo2 == componente_a_llegar_next and componente_a_llegar_next!=False:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))
+                            obtain_sequedo2+=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            while iteration!=correrfilas-1:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                                iteration+=1
+                        # elif componente_a_llegar_next==False:
+                        #     componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
 
-                            if obtain_sequedo2 < componente_a_llegar_actual:
-                                while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
-                                    obtain_sequedo2+=1
-                                    Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
-                                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
-                                    iteration+=1
-                                while iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
-                                    iteration+=1
-                                # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #     if obtain_sequedo2 < componente_a_llegar_actual:
+                        #         while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2+=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
 
-                            elif obtain_sequedo2 > componente_a_llegar_actual:
-                                while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
-                                    obtain_sequedo2-=1
-                                    Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
-                                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
-                                    iteration+=1
-                                while iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
-                                    iteration+=1
+                        #     elif obtain_sequedo2 > componente_a_llegar_actual:
+                        #         while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2-=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #     elif obtain_sequedo2 == componente_a_llegar_next and componente_a_llegar_next!=False:
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
 
                     elif haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
                         iteration=0
@@ -712,6 +886,313 @@ class lista_Componente:
                 elif int(lineaactual) == int(lineaMayor):
                     if   haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==True:
                         iteration=0
+                        if obtain_sequedo2 < componente_a_llegar and componente_a_llegar!=False:
+                            while obtain_sequedo2 <= componente_a_llegar and iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                                contadortiempo+=1
+                                lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                                obtain_sequedo2+=1
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                                iteration+=1
+                            while iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                                contadortiempo+=1
+                                lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                                iteration+=1
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+
+                        elif obtain_sequedo2 > componente_a_llegar and componente_a_llegar!=False:
+                            while obtain_sequedo2 >= componente_a_llegar and iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                                contadortiempo+=1
+                                lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                                obtain_sequedo2-=1
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                                iteration+=1
+                            while iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                                contadortiempo+=1
+                                lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                                iteration+=1
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        elif obtain_sequedo2 == componente_a_llegar and componente_a_llegar!=False:
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            obtain_sequedo2+=1
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        # elif componente_a_llegar==False:
+                        #     componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
+
+                        #     if obtain_sequedo2 < componente_a_llegar_actual:
+                        #         while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2+=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+
+                        #     elif obtain_sequedo2 > componente_a_llegar_actual:
+                        #         while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2-=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #     elif obtain_sequedo2 == componente_a_llegar and componente_a_llegar!=False:
+                        #         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        #         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        #         Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #         # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                        #         iteration+=1
+
+                    elif haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+
+                    elif haylineasiguiente==False and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+
+                    elif haylineasiguiente==False and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==True:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            contadortiempo+=1
+                            lista_tiempos.insertar_tiempo(contadortiempo,lineaactual,componente_a_llegar)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+
+                listaactual=listaactual.siguiente
+            listaMadre = listaMadre.siguiente
+
+        # for idi in range(longitud_resultado):
+        #     print("☻  ",Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados,idi))
+        #     Lista_Compo_Resultados.mostrar_componentes(Lista_Linea_Resultados,idi)
+        # Lista_Linea_Resultados.bubblesort()
+        loadfile.Lista_Linea_Resultados=Lista_Linea_Resultados
+        loadfile.Lista_Compo_Resultados=Lista_Compo_Resultados
+        loadfile.lista_tiempos=lista_tiempos
+
+        print("CONTADOR TIEMPO:        -------------------------------",contadortiempo)
+        # lista_tiempos.recorrer_tiempo()
+        # loadfile.Matriz_Resultados=Matriz_Resultados
+        # Matriz_Resultados.generarHTML_individual(nameproduct)
+
+    def calculoTiempoOptimizadoSimulacion(self, lista,namesimulacion, nameproduct):
+        print("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
+        Lista_lineatodos_duplicado=lista_lineasduplicadas() #todas las lineas a de ensamble duplicadas
+        Lista_Dondequedo=lista_Dondesequedo() #temporales en donde quedo de ultimo
+        lista_Yaensamblo=lista_Yaseensamblo() #temporales si ya se ensamblo o no
+        Lista_Linea_Resultados=lista_Linea()
+        Lista_Compo_Resultados=lista_Componente()
+        Matriz_Resultados=loadfile.Matriz_Resultados
+        listaMadre1=lista.lineascabeza
+        longitud_resultado=0
+        
+        #se llena la lista que contendrá el #todo resultado de las operaciones
+        contadorinsercion=0
+
+        while listaMadre1 != None:
+            if not Lista_Linea_Resultados.buscar_linea(listaMadre1.linea):
+                Lista_Linea_Resultados.insertar_lineas(contadorinsercion,listaMadre1.linea)
+                Lista_Dondequedo.insertar_dondesequedo(listaMadre1.linea,1)#INICIA en 1 porque este en 1
+                lista_Yaensamblo.insertar_yaseensamblo(listaMadre1.linea,"primero")#INICIA en False porque nadie se ha ensamblado
+                longitud_resultado+=1
+                contadorinsercion+=1
+            listaMadre1=listaMadre1.siguiente
+        # Lista_Linea_Resultados.bubblesort()
+        # Lista_Linea_Resultados.recorrer_lineas()
+        print("ORDENAMIENTO BURBUJA DE LA LISTA DE LINEAS CABEZA")
+        
+        # Lista_Linea_Resultados.recorrer_lineas()
+        listaMadre2=lista.lineascabeza
+        while listaMadre2 != None:
+            temporalcomponentdupli=listaMadre2.abajo
+            Lista_lineatodos_duplicado.insertar_lineascomponenteduplicados(listaMadre2.linea,temporalcomponentdupli.componente )
+            listaMadre2=listaMadre2.siguiente
+
+        listaMadre=lista.lineascabeza
+        # Lista_Linea_Resultados.bubblesort()
+        while listaMadre!=None: #!RECORRE LA LISTA MADRE DE TODOS
+            obtain_sequedo= int(Lista_Dondequedo.buscar_dondesequedo(listaMadre.linea))
+            obtain_seensaamblo=lista_Yaensamblo.buscar_yaseensamblo(listaMadre.linea)
+            tiempo_ensamble =  loadfile.lista_lineasprod.buscar_tiempo_linea(listaMadre.linea)
+            temporalcomponent=listaMadre.abajo
+            lineaMayor=listaMadre.linea
+            componente_a_llegar = int(temporalcomponent.componente)
+            cont=0
+            print("◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘◘ ")
+            print("             Línea:  ", listaMadre.linea)
+            print("Donde se quedo al inicio :      " + str(obtain_sequedo))
+            if obtain_sequedo == componente_a_llegar:
+                cont=0
+            elif obtain_sequedo < componente_a_llegar:
+                while obtain_sequedo < componente_a_llegar: # si quedo es menor a llegar se suma hasta que se igualen
+                    obtain_sequedo+=1
+                    cont+=1
+            elif obtain_sequedo > componente_a_llegar: 
+                while obtain_sequedo > componente_a_llegar: # si quedo es mayor a llegar se resta uno hasta que se igualen
+                    obtain_sequedo-=1
+                    cont+=1
+            correrfilas= int(cont)+int(tiempo_ensamble)-1#cantidad de filas que recorrerá cada lista actual
+            print("Donde se quedo despues :      " + str(obtain_sequedo))
+            print("Componente a llegar:  " + str(componente_a_llegar))
+            print("Filas que se corren:  ", correrfilas)
+            print("Tiempo de ensamble:   ", tiempo_ensamble)
+            print("Contador a sumar:     ", cont)
+            listaactual=Lista_Linea_Resultados.lineascabeza
+            correrfilas1=int(cont)+int(tiempo_ensamble)
+            while listaactual!= None: #!RECORRE LA LISTA DE RESULTADOS
+                print("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")
+                lineaactual=listaactual.linea
+                idlineaactual=listaactual.id
+                haylineasiguiente, lineasiguiente, idlineasiguiente=lista.buscar_sig_actual(idlineaactual)
+                if haylineasiguiente:
+                    componente_a_llegar_next=int(Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineasiguiente))
+                else:
+                    componente_a_llegar_next=False
+                obtain_sequedo2=Lista_Dondequedo.buscar_dondesequedo(lineaactual)
+                print("Línea actual: ", lineaactual,"Se quedo en: ", obtain_sequedo2, "hay siguiente: ", haylineasiguiente, "componente_a_llegar_next; ",componente_a_llegar_next)
+                # print("OBTAIN SEQUEDO 2: ", obtain_sequedo2, "Componente a llegar next: ", componente_a_llegar_next, "componente_allegar: ", componente_a_llegar)
+                if   int(lineaactual) == int(lineaMayor) and  lista_Yaensamblo.buscar_yaseensamblo(lineaactual)=="primero":# and lista_Yaensamblo.buscar_yaseensamblo(lineaactual):
+                    # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                    iteration=0
+                    if obtain_sequedo2 < componente_a_llegar:
+                        while obtain_sequedo2 <= componente_a_llegar and iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            obtain_sequedo2+=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            iteration+=1
+                        while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                    else:
+                        while obtain_sequedo2 >= componente_a_llegar and iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            obtain_sequedo2-=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            iteration+=1
+                        while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+
+                elif int(lineaactual) != int(lineaMayor) and  lista_Yaensamblo.buscar_yaseensamblo(lineaactual)=="primero":
+                    # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                    iteration=0
+                    if obtain_sequedo2 < componente_a_llegar_next and componente_a_llegar_next!=False:
+                        while obtain_sequedo2 <= componente_a_llegar_next and iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            obtain_sequedo2+=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            iteration+=1
+                        while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+
+                    elif obtain_sequedo2 > componente_a_llegar_next and componente_a_llegar_next!=False:
+                        while obtain_sequedo2 >= componente_a_llegar_next and iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            obtain_sequedo2-=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            iteration+=1
+                        while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                    elif obtain_sequedo2==componente_a_llegar_next:
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))
+                        obtain_sequedo2+=1
+                        Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        while iteration!=correrfilas1-1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                    elif componente_a_llegar_next==False:
+                        componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
+                        while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                            obtain_sequedo2+=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            iteration+=1
+                        while iteration!=correrfilas1:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                        Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+
+
+
+                        # for iteration in range(correrfilas):
+                        #     if obtain_sequedo2 <= componente_a_llegar_next:
+                        #         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #         obtain_sequedo2+=1
+                        #         Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #     elif obtain_sequedo2 >= componente_a_llegar_next:
+                        #         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #         obtain_sequedo2-=1
+                        #         Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #     else:
+                        #         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+
+                elif int(lineaactual) != int(lineaMayor):
+                    if   haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==True:
+                        iteration=0
                         if obtain_sequedo2 < componente_a_llegar_next and componente_a_llegar_next!=False:
                             while obtain_sequedo2 <= componente_a_llegar_next and iteration!=correrfilas:
                                 Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
@@ -720,12 +1201,9 @@ class lista_Componente:
                                 lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                                 iteration+=1
                             while iteration!=correrfilas:
-                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
-                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
-                                # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
                                 iteration+=1
-                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
-                            # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
 
                         elif obtain_sequedo2 > componente_a_llegar_next and componente_a_llegar_next!=False:
                             while obtain_sequedo2 >= componente_a_llegar_next and iteration!=correrfilas:
@@ -735,45 +1213,143 @@ class lista_Componente:
                                 lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
                                 iteration+=1
                             while iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                                iteration+=1
+                        elif obtain_sequedo2 == componente_a_llegar_next and componente_a_llegar_next!=False:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))
+                            obtain_sequedo2+=1
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                            while iteration!=correrfilas-1:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                                iteration+=1
+                        # elif componente_a_llegar_next==False:
+                        #     componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
+
+                        #     if obtain_sequedo2 < componente_a_llegar_actual:
+                        #         while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2+=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+
+                        #     elif obtain_sequedo2 > componente_a_llegar_actual:
+                        #         while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2-=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #     elif obtain_sequedo2 == componente_a_llegar_next and componente_a_llegar_next!=False:
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+
+                    elif haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+
+                    elif haylineasiguiente==False and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+                    
+                    elif haylineasiguiente==False and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==True:
+                        iteration=0
+                        while iteration!=correrfilas:
+                            Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                            iteration+=1
+
+                elif int(lineaactual) == int(lineaMayor):
+                    if   haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==True:
+                        iteration=0
+                        if obtain_sequedo2 < componente_a_llegar and componente_a_llegar!=False:
+                            while obtain_sequedo2 <= componente_a_llegar and iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                                obtain_sequedo2+=1
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                                iteration+=1
+                            while iteration!=correrfilas:
                                 Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                                 lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
                                 # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                                 iteration+=1
                             # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                             # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
 
-                        elif componente_a_llegar_next==False:
-                            componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
+                        elif obtain_sequedo2 > componente_a_llegar and componente_a_llegar!=False:
+                            while obtain_sequedo2 >= componente_a_llegar and iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                                obtain_sequedo2-=1
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                                iteration+=1
+                            while iteration!=correrfilas:
+                                Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                                lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                                Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                                # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                                iteration+=1
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        elif obtain_sequedo2 == componente_a_llegar and componente_a_llegar!=False:
+                            # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                            obtain_sequedo2+=1
+                            lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            iteration+=1
+                        # elif componente_a_llegar==False:
+                        #     componente_a_llegar_actual=Lista_lineatodos_duplicado.buscar_componentedelineaduplicados(lineaactual)
 
-                            if obtain_sequedo2 < componente_a_llegar_actual:
-                                while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
-                                    obtain_sequedo2+=1
-                                    Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
-                                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
-                                    iteration+=1
-                                while iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
-                                    iteration+=1
-                                # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #     if obtain_sequedo2 < componente_a_llegar_actual:
+                        #         while obtain_sequedo2 <= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2+=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
 
-                            elif obtain_sequedo2 > componente_a_llegar_actual:
-                                while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
-                                    obtain_sequedo2-=1
-                                    Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
-                                    lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
-                                    iteration+=1
-                                while iteration!=correrfilas:
-                                    Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
-                                    iteration+=1
+                        #     elif obtain_sequedo2 > componente_a_llegar_actual:
+                        #         while obtain_sequedo2 >= componente_a_llegar_actual and iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "Mover Brazo-C"+str(obtain_sequedo2))                        
+                        #             obtain_sequedo2-=1
+                        #             Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,False)
+                        #             iteration+=1
+                        #         while iteration!=correrfilas:
+                        #             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "No hacer nada")
+                        #             iteration+=1
+                        #     elif obtain_sequedo2 == componente_a_llegar and componente_a_llegar!=False:
+                        #         Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
+                        #         lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                        #         Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
+                        #         # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                        #         iteration+=1
 
                     elif haylineasiguiente==True  and lista_Yaensamblo.buscar_yaseensamblo(lineaactual)==False:
                         iteration=0
                         while iteration!=correrfilas:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
-                            # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                             iteration+=1
                         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                         # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
@@ -783,6 +1359,7 @@ class lista_Componente:
                         while iteration!=correrfilas:
                             Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                             lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
+                            Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2)
                             # Lista_Dondequedo.actualizar_dondesequedo(lineaactual, obtain_sequedo2-1)
                             iteration+=1
                         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
@@ -798,16 +1375,22 @@ class lista_Componente:
                         # Lista_Compo_Resultados.insertar_componente(idlineaactual, Lista_Linea_Resultados, "ENSAMBLAR-C"+str(int(obtain_sequedo2)-1))
                         # lista_Yaensamblo.actualizar_yaseensamblo(lineaactual,True)
 
-
                 listaactual=listaactual.siguiente
             listaMadre = listaMadre.siguiente
 
-        for idi in range(longitud_resultado):
-            print("☻  ",Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados,idi))
-            Lista_Compo_Resultados.mostrar_componentes(Lista_Linea_Resultados,idi)
-
+        # for idi in range(longitud_resultado):
+        #     print("☻  ",Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados,idi))
+        #     Lista_Compo_Resultados.mostrar_componentes(Lista_Linea_Resultados,idi)
+        # Lista_Linea_Resultados.bubblesort()
         loadfile.Lista_Linea_Resultados=Lista_Linea_Resultados
         loadfile.Lista_Compo_Resultados=Lista_Compo_Resultados
+        loadfile.Matriz_Resultados=Matriz_Resultados
+        
+        
+        Matriz_Resultados.agregardatos_tablaSimulacion(namesimulacion,nameproduct)
+        # time.sleep(2)
+        # Matriz_Resultados.writexmlsalida(namesimulacion, nameproduct)
+        # loadfile.Matriz_Resultados.generarHTML_Simulacion(nameproduct)
 
 #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 # ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   DOBLEENLAZADA PRODUCTO   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
@@ -1039,7 +1622,53 @@ class lista_lineasduplicadas:
         return False
 
 
+#! Lista de donde se quedo el MOVIMIENTO POR LÍNEA simple enlazada
+class NODO_Tiempos:
+    def __init__(self,  tiempo = None, linea=None, componente=None , siguiente = None):
+        self.tiempo=tiempo
+        self.linea=linea
+        self.componente=componente
+        self.siguiente = siguiente
 
+class lista_Tiempos:
+    def __init__(self):
+        self.cabezatiempo = None
+        self.siguiente=None
+        self.anterior=None
+        self.abajo=None
+        self.arriba=None
+
+    def insertar_tiempo(self, tiempo, linea, componente):
+        if self.cabezatiempo is None:
+            self.cabezatiempo=NODO_Tiempos(tiempo=tiempo,linea=linea,componente=componente)
+            return
+        linea_actual=self.cabezatiempo
+        while linea_actual.siguiente:
+            linea_actual=linea_actual.siguiente
+        linea_actual.siguiente=NODO_Tiempos(tiempo=tiempo,linea=linea,componente=componente)
+
+    def recorrer_tiempo(self):
+        if self.cabezatiempo is None:
+            print("List has no element")
+            return
+        linea_actual=self.cabezatiempo
+        print("La línea: ", linea_actual.linea, "   Componente : ", linea_actual.componente,"-->")
+        while linea_actual.siguiente:
+            linea_actual=linea_actual.siguiente
+            print("La línea: ", linea_actual.linea, "   Componente : ", linea_actual.componente,"-->")
+
+    def buscar_tiempo(self, tiempo):
+        linea_actual=self.cabezatiempo
+        if linea_actual is None:
+            return "estavacio"
+        while linea_actual is not None:
+            if int(linea_actual.tiempo)  ==int(tiempo) :
+                return int(linea_actual.linea), int(linea_actual.componente)
+            else:
+                linea_actual=linea_actual.siguiente
+        return None, None
+
+#! MATRIZ PARA MOSTRAR EL HTML
 class HeaderList():
     def __init__(self, First=None):
         self.First=First
@@ -1146,27 +1775,29 @@ class matriz():
             while current!=None:
                 print("(",str(current.row),",",current.column,")  --> ",current.value)
                 current=current.derecha
-            erow=erow.Next        
-    def generarHTML_individual(self):
+            erow=erow.Next
+
+    def generarHTML_individual(self, nameproduct):
+        
         Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
         columnas=int(Lista_Linea_Resultados.cantidad_lineas())
         cont2=0
         ecolumn=self.eColumns.First
         contenido = ''
-        htmlFile = open("Reportes/Reporte_EJEMPLO" + ".html", "w", encoding='utf-8')
+        htmlFile = open("Reportes/ReporteIND_"+str(nameproduct) + ".html", "w", encoding='utf-8')
         htmlFile.write("""
             <!DOCTYPE html>
             <html lang="en" >
             <head>
             <meta charset="UTF-8">
-            <title>CodePen - &lt;Table&gt; Responsive</title>
+            <title>ReporteIND- &lt;"""+str(nameproduct)+"""&gt;</title>
             <link rel="stylesheet" href="./style.css">
 
             </head>
             <body>
             <!-- partial:index.partial.html -->
-            <h1><span class="blue">&lt;</span>Reporte<span class="blue">&gt;</span> <span class="yellow"> de Tokens</pan></h1>
-            <h2>  <a href="https://github.com/Alvaro-SP" target="_blank">Lista de Tokens</a></h2>
+            <h1><span class="blue">&lt;</span>Reporte<span class="blue">&gt;</span> <span class="yellow"> de Ensamblaje</pan></h1>
+            <h2>  <a href="https://github.com/Alvaro-SP" target="_blank">"""+str(nameproduct)+"""</a></h2>
 
             <table class="container">
             <thead>
@@ -1199,14 +1830,154 @@ class matriz():
         htmlFile.write(contenido)
         htmlFile.write("""
         </tbody>
-         </table>
+         </table>""")
+        htmlFile.write("""
+         <h1><span class="blue"></span>El tiempo Optimo de ensamblaje es <span class="red"> : </span> <span class="yellow">"""+str(cont-1)+""" segundos</pan></h1>
             <!-- partial -->
         <script  src="./script.js"></script>
         </body>
         </html>""")
         htmlFile.close
+        try:
+            os.startfile(r"Reportes\ReporteIND_"+str(nameproduct) + ".html")
+            print("\033[1;32m"+"\nSe ha ABIERTO el HTML con éxito... \n"+'\033[0;m')
+        except Exception:
+            print("\033[1;31m"+"\nUps... No se puede abrir el archivo, talvez no lo ha generado :( \n"+'\033[0;m')     
+            return False
 
+    def generarHTML_Simulacion(self,namesimulacion, nameproduct):
+        
+        Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
+        columnas=int(Lista_Linea_Resultados.cantidad_lineas())
+        cont2=0
+        ecolumn=self.eColumns.First
+        contenido = ''
+        htmlFile = open("Reportes/Reporte_"+str(namesimulacion)+"_"+str(nameproduct)+".html","w", encoding='utf-8')
+        htmlFile.write("""
+            <!DOCTYPE html>
+            <html lang="en" >
+            <head>
+            <meta charset="UTF-8">
+            <title>Reporte-&lt;"""+str(namesimulacion)+"""&gt;</title>
+            <link rel="stylesheet" href="./style.css">
 
+            </head>
+            <body>
+            <!-- partial:index.partial.html -->
+            <h1><span class="blue">&lt;</span>Reporte<span class="blue">&gt;</span> <span class="yellow"> de Ensamblaje</pan></h1>
+            <h2>  <a href="https://github.com/Alvaro-SP" target="_blank">"""+str(namesimulacion)+""" ---- """+str(nameproduct)+"""</a></h2>
+
+            <table class="container">
+            <thead>
+              <tr>
+              <th>Tiempo</th>
+ 
+                """
+              )
+        while cont2 < columnas:
+            valor = str(Lista_Linea_Resultados.buscar_lineapor_id(cont2))
+            htmlFile.write("          <th> Línea "+valor+"</th>")
+            cont2+=1
+        htmlFile.write("""
+                </tr>
+                </thead>
+                <tbody>
+            """)
+        cont=1
+        while ecolumn!=None:
+            current=ecolumn.accessNode
+            htmlFile.write("<tr>\n")
+            htmlFile.write("          <td>"+str(cont)+"</td>")
+            while current!=None:
+                htmlFile.write("          <td>"+str(current.value)+"</td>")
+                current=current.abajo
+            ecolumn=ecolumn.Next
+            htmlFile.write("</tr>\n")
+            cont+=1
+
+        htmlFile.write(contenido)
+        htmlFile.write("""
+        </tbody>
+         </table>""")
+        htmlFile.write("""
+         <h1><span class="blue"></span>El tiempo Optimo de ensamblaje es <span class="red"> : </span> <span class="yellow">"""+str(cont-1)+""" segundos</pan></h1>
+            <!-- partial -->
+        <script  src="./script.js"></script>
+        </body>
+        </html>""")
+        htmlFile.close
+        try:
+            os.startfile(r"Reportes\Reporte_"+str(namesimulacion)+"_"+str(nameproduct)+".html")
+            print("\033[1;32m"+"\nSe ha ABIERTO el HTML con éxito... \n"+'\033[0;m')
+        except Exception:
+            print("\033[1;31m"+"\nUps... No se puede abrir el archivo, talvez no lo ha generado :( \n"+'\033[0;m')     
+            return False
+
+    def indent(self, elem, level=0):
+        i = "\n" + level*"  "
+        j = "\n" + (level-1)*"  "
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "  "
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+            for subelem in elem:
+                self.indent(subelem, level+1)
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = j
+        else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = j
+        return elem   
+
+    def writexmlsalida(self,namesimulacion, nameproduct):
+        Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
+        columnas=int(Lista_Linea_Resultados.cantidad_lineas())
+        ecolumn=self.eColumns.First
+        tiempoptimo=0
+        while ecolumn!=None:
+            ecolumn=ecolumn.Next
+            tiempoptimo+=1
+        ecolumn=self.eColumns.First
+
+        SalidaSimulacion = ET.Element('SalidaSimulacion')
+        Nombre = ET.SubElement(SalidaSimulacion, 'Nombre').text=namesimulacion
+        ListadoProductos = ET.SubElement(SalidaSimulacion, 'ListadoProductos')
+        ListadoProductos= ET.SubElement(ListadoProductos, 'Producto') 
+        Nombre2 = ET.SubElement(ListadoProductos, 'Nombre').text=nameproduct
+        TiempoTotal = ET.SubElement(ListadoProductos, 'TiempoTotal').text=str(tiempoptimo)
+        ElaboracionOptima = ET.SubElement(ListadoProductos, 'ElaboracionOptima')
+
+        ecolumn=self.eColumns.First
+        cont=1
+        while ecolumn != None:
+            current=ecolumn.accessNode
+            Tiempo = ET.SubElement(ElaboracionOptima, 'Tiempo', NoSegundo=str(cont))
+            # Tiempo.set('NoSegundo',str(cont))
+            cont2=0
+            while current != None:
+                valor = str(Lista_Linea_Resultados.buscar_lineapor_id(cont2))
+                LineaEnsamblaje = ET.SubElement(Tiempo, 'LineaEnsamblaje', NoLinea=str(valor)).text=str(current.value)
+                # LineaEnsamblaje.set('NoLinea',valor)
+                cont2+=1
+                current=current.abajo
+            ecolumn=ecolumn.Next
+            cont+=1
+        try:
+            valor=str(namesimulacion)+"_"+str(nameproduct)
+            archivo = open('XML_generados/archivo_Salida_'+valor+'.xml','w')
+            mydata=ET.tostring(self.indent(SalidaSimulacion), encoding='utf-8').decode('utf-8')
+            archivo.write(mydata)
+            archivo.close()
+            try:
+                os.startfile(r"XML_generados\archivo_Salida_"+valor+".xml")
+                print("\033[1;32m"+"\nSe ha ABIERTO el HTML con éxito... \n"+'\033[0;m')
+            except Exception:
+                print("\033[1;31m"+"\nUps... No se puede abrir el archivo, talvez no lo ha generado :( \n"+'\033[0;m')     
+                return False
+        except Exception:
+            print("\033[1;31m"+"\nUps... No se puede generar el archivo, talvez no lo ha procesado o podria haber un error, intentelo nevamente :( \n"+'\033[0;m')     
+            return False
 
     def recorrecolumns(self,m,n):
         ecolumn=self.eColumns.First
@@ -1220,6 +1991,28 @@ class matriz():
                 current=current.abajo
             ecolumn=ecolumn.Next
         print("-----------FIN RECORRIDO COLUMNAS--------------")
+
+    def agregardatos_tablaSimulacion(self,namesimulacion, nameproduct):
+        Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
+        Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
+        Matriz_Resultados=matriz()
+        columnas=Lista_Linea_Resultados.cantidad_lineas()
+        filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, 1))
+        cont=1
+        columnast=int(columnas)
+        while cont <= columnast  :
+            #aquí iria el ordenamiento burbuja de las lineas
+            lineatext=Lista_Linea_Resultados.buscar_lineapor_id(cont-1)
+            filast=Lista_Compo_Resultados.return_idycomponente(Lista_Linea_Resultados, cont-1)
+            temp=filast.abajo
+            for c in range(filas):
+                if temp != None:
+                    Matriz_Resultados.insert(cont, c, str(temp.componente))
+                    temp=temp.abajo
+            cont+=1
+        # loadfile.Matriz_Resultados=Matriz_Resultados
+        Matriz_Resultados.generarHTML_Simulacion(namesimulacion,nameproduct)
+        Matriz_Resultados.writexmlsalida(namesimulacion,nameproduct)
 
 def trash():
         pass

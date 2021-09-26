@@ -4,8 +4,15 @@ from PyQt5.QtGui import QMovie
 from PyQt5.QtCore import pyqtSlot
 from loadfile import *
 import loadfile
+import inputTiempo
+import mensaje
+tiempoimput=0
 combo=QWidget
 combo2=QWidget
+widget_components1=QListWidget
+widget_components2=QListWidget
+lineasambled=None
+componentesambled=None
 class Ui_SMARTWATCH_WINDOW(object):
     def __init__(self):
         self.loadedconfig=False
@@ -28,6 +35,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.addlabelsextra()
         #! se cargan la barra de estado
         self.statusbar(SMARTWATCH_WINDOW)
+        # Add button
 
     def loadgifs(self):
         self.LABEL_BACKGROUND = QtWidgets.QLabel(self.centralwidget)
@@ -77,20 +85,13 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.movie4.start()
         self.label_5.setScaledContents(True)
         self.label_5.setObjectName("label_5")
-        self.lbl_BRAZOROBOTICO = QtWidgets.QLabel(self.centralwidget)
-        self.lbl_BRAZOROBOTICO.setGeometry(QtCore.QRect(-90, 200, 361, 321))
-        self.lbl_BRAZOROBOTICO.setText("")
-        self.lbl_BRAZOROBOTICO.setScaledContents(True)
-        self.lbl_BRAZOROBOTICO.setAlignment(QtCore.Qt.AlignCenter)
-        self.lbl_BRAZOROBOTICO.setObjectName("lbl_BRAZOROBOTICO")
-        self.movie6=QMovie("Codigo Fuente/images/robot.gif")
-        self.lbl_BRAZOROBOTICO.setMovie(self.movie6)
-        self.movie6.start()
+        
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(160, 520, 651, 16))
+        self.progressBar.setGeometry(QtCore.QRect(160, 510, 648, 16))
         self.progressBar.setAutoFillBackground(True)
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
+        
 
     def principalwindow(self, SMARTWATCH_WINDOW):
         SMARTWATCH_WINDOW.setObjectName("SMARTWATCH_WINDOW")
@@ -122,10 +123,10 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.btn_ensamblar.clicked.connect(self.ensamblarproductoseleccionado)         
         self.btn_ensamblar.setObjectName("btn_ensamblar")
         combo2 = QtWidgets.QComboBox(self.centralwidget)
-        combo2.setGeometry(QtCore.QRect(960, 90, 180, 31))
+        combo2.setGeometry(QtCore.QRect(960, 70, 180, 31))
         combo2.setObjectName("combo2")
         self.btn_graphviz = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_graphviz.setGeometry(QtCore.QRect(960, 130, 180, 31))
+        self.btn_graphviz.setGeometry(QtCore.QRect(960, 110, 180, 31))
         self.btn_graphviz.clicked.connect(self.creargraficographviz)         
         self.btn_graphviz.setObjectName("btn_graphviz")
 
@@ -144,33 +145,16 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 339, 309))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
         self.table_ensamblaje = QtWidgets.QTableWidget(self.centralwidget)
-        self.table_ensamblaje.setGeometry(QtCore.QRect(610, 180, 530, 341))
+        self.table_ensamblaje.setGeometry(QtCore.QRect(610, 160, 530, 341))
         self.table_ensamblaje.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.table_ensamblaje.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.table_ensamblaje.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.table_ensamblaje.setAutoScrollMargin(14)
         self.table_ensamblaje.setIconSize(QtCore.QSize(4, 4))
         self.table_ensamblaje.setGridStyle(QtCore.Qt.SolidLine)
+        self.table_ensamblaje.setSortingEnabled(True)
         self.table_ensamblaje.setObjectName("table_ensamblaje")
-
-        # item = QtWidgets.QTableWidgetItem()
-        # font = QtGui.QFont()
-        # font.setFamily("JetBrains Mono")
-        # font.setPointSize(9)
-        # font.setBold(True)
-        # font.setWeight(75)
-        # item.setFont(font)
-        # self.table_ensamblaje.setVerticalHeaderItem(0, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # font = QtGui.QFont()
-        # font.setFamily("JetBrains Mono")
-        # font.setPointSize(9)
-        # font.setBold(True)
-        # font.setWeight(75)
-        # item.setFont(font)
-        # self.table_ensamblaje.setVerticalHeaderItem(1, item)
 
     def widgetprocess(self):
         self.widget_proceso = QtWidgets.QListWidget(self.centralwidget)
@@ -215,35 +199,12 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.widget_proceso.setSelectionRectVisible(False)
         self.widget_proceso.setObjectName("widget_proceso")
 
-        
-        for p in range(0,5):
-            item = QtWidgets.QListWidgetItem()
-            item.setTextAlignment(QtCore.Qt.AlignCenter)
-            font = QtGui.QFont()
-            font.setBold(True)
-            font.setItalic(False)
-            font.setWeight(75)
-            font.setStrikeOut(False)
-            font.setStyleStrategy(QtGui.QFont.PreferDefault)
-            item.setFont(font)
-            icon3 = QtGui.QIcon()
-            icon3.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Flecha_tesela.svg - Copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            item.setIcon(icon3)
-            brush = QtGui.QBrush(QtGui.QColor(178, 255, 96))
-            brush.setStyle(QtCore.Qt.Dense1Pattern)
-            item.setBackground(brush)
-            brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-            brush.setStyle(QtCore.Qt.NoBrush)
-            item.setForeground(brush)
-            
-            self.widget_proceso.addItem(item)
-            item = self.widget_proceso.item(p)
-            item.setText( str(p))  
-
     def widgetscomponents(self):
-        self.widget_components1 = QtWidgets.QListWidget(self.centralwidget)
-        self.widget_components1.setGeometry(QtCore.QRect(200, 180, 181, 171))
-        self.widget_components1.setObjectName("widget_components1")
+        global widget_components1
+        global widget_components2
+        widget_components1 = QtWidgets.QListWidget(self.centralwidget)
+        widget_components1.setGeometry(QtCore.QRect(210, 180, 181, 171))
+        widget_components1.setObjectName("widget_components1")
         item = QtWidgets.QListWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
         font = QtGui.QFont()
@@ -259,12 +220,13 @@ class Ui_SMARTWATCH_WINDOW(object):
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.NoBrush)
         item.setForeground(brush)
-        self.widget_components1.addItem(item)        
-        self.widget_components2 = QtWidgets.QListWidget(self.centralwidget)
-        self.widget_components2.setGeometry(QtCore.QRect(390, 180, 181, 171))
-        self.widget_components2.setObjectName("widget_components2")
+        widget_components1.addItem(item)
+        widget_components2 = QtWidgets.QListWidget(self.centralwidget)
+        widget_components2.setGeometry(QtCore.QRect(390, 180, 181, 171))
+        widget_components2.setObjectName("widget_components2")
         item = QtWidgets.QListWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignCenter)
+        
         font = QtGui.QFont()
         font.setFamily("Franklin Gothic Heavy")
         font.setPointSize(11)
@@ -278,7 +240,16 @@ class Ui_SMARTWATCH_WINDOW(object):
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.NoBrush)
         item.setForeground(brush)
-        self.widget_components2.addItem(item)
+        widget_components2.addItem(item)
+        self.lbl_BRAZOROBOTICO = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_BRAZOROBOTICO.setGeometry(QtCore.QRect(-90, 200, 361, 321))
+        self.lbl_BRAZOROBOTICO.setText("")
+        self.lbl_BRAZOROBOTICO.setScaledContents(True)
+        self.lbl_BRAZOROBOTICO.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_BRAZOROBOTICO.setObjectName("lbl_BRAZOROBOTICO")
+        self.movie6=QMovie("Codigo Fuente/images/robot.gif")
+        self.lbl_BRAZOROBOTICO.setMovie(self.movie6)
+        self.movie6.start()
 
     def addlabelsextra(self):
         self.lbl_componentnecesarios = QtWidgets.QLabel(self.centralwidget)
@@ -287,6 +258,8 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_Producto.setGeometry(QtCore.QRect(641, 20, 191, 31))
         self.lbl_Graficar = QtWidgets.QLabel(self.centralwidget)
         self.lbl_Graficar.setGeometry(QtCore.QRect(920, 20, 191, 31))
+        self.lbl_optimize = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_optimize.setGeometry(QtCore.QRect(850, 500, 300, 31))
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
         font.setPointSize(18)
@@ -319,8 +292,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_Producto.setWordWrap(False)
         self.lbl_Producto.setOpenExternalLinks(False)
         self.lbl_Producto.setObjectName("lbl_producto")
-        self.lbl_Producto.setText("BIENVENIDO! ")
-
+        self.lbl_Producto.setText("HOLA BENDICIONES !")
         self.lbl_Graficar.setFont(fontp)
         self.lbl_Graficar.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.lbl_Graficar.setStyleSheet("color: rgb(255, 255, 255);")
@@ -346,6 +318,17 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.lbl_procesorealizado.setWordWrap(False)
         self.lbl_procesorealizado.setOpenExternalLinks(False)
         self.lbl_procesorealizado.setObjectName("lbl_procesorealizado")
+        fontp.setPointSize(12)
+        self.lbl_optimize.setFont(fontp)
+        self.lbl_optimize.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lbl_optimize.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbl_optimize.setTextFormat(QtCore.Qt.AutoText)
+        self.lbl_optimize.setScaledContents(True)
+        self.lbl_optimize.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_optimize.setWordWrap(False)
+        self.lbl_optimize.setOpenExternalLinks(False)
+        self.lbl_optimize.setObjectName("lbl_Graficar")
+        self.lbl_optimize.setText(" TIEMPO APROXIMADO : ")
 
     def statusbar(self,SMARTWATCH_WINDOW):
         #!▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
@@ -402,6 +385,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionREPORTE_DE_SIMULACI_N.setFont(font)
         self.actionREPORTE_DE_SIMULACI_N.setObjectName("actionREPORTE_DE_SIMULACI_N")
+        self.actionREPORTE_DE_SIMULACI_N.triggered.connect(self.reporteHtml)
         self.actionREPORTE_DE_COLA_DE_SECUENCIA = QtWidgets.QAction(SMARTWATCH_WINDOW)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
@@ -410,6 +394,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionREPORTE_DE_COLA_DE_SECUENCIA.setFont(font)
         self.actionREPORTE_DE_COLA_DE_SECUENCIA.setObjectName("actionREPORTE_DE_COLA_DE_SECUENCIA")
+        self.actionREPORTE_DE_COLA_DE_SECUENCIA.triggered.connect(self.crearReporteSecuencia)
         #?▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
         # *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄   AYUDA   ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
         self.menuAYUDA = QtWidgets.QMenu(self.menubar)
@@ -422,6 +407,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionINFORMACI_N_PERSONAL.setFont(font)
         self.actionINFORMACI_N_PERSONAL.setObjectName("actionINFORMACI_N_PERSONAL")
+        self.actionINFORMACI_N_PERSONAL.triggered.connect(self.infopersonal)
         self.actionACERCA_DE = QtWidgets.QAction(SMARTWATCH_WINDOW)
         self.actionACERCA_DE.setCheckable(False)
         font = QtGui.QFont()
@@ -431,6 +417,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         font.setWeight(75)
         self.actionACERCA_DE.setFont(font)
         self.actionACERCA_DE.setObjectName("actionACERCA_DE")
+        self.actionACERCA_DE.triggered.connect(self.acercade)
         SMARTWATCH_WINDOW.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(SMARTWATCH_WINDOW)
         self.statusbar.setObjectName("statusbar")
@@ -459,52 +446,49 @@ class Ui_SMARTWATCH_WINDOW(object):
         self.movie.start()
 
     def retranslateUi(self, SMARTWATCH_WINDOW):
+        global widget_components1
+        global widget_components2
         _translate = QtCore.QCoreApplication.translate
         SMARTWATCH_WINDOW.setWindowTitle(_translate("SMARTWATCH_WINDOW", "ASSEMBLER 3000 C:"))
         self.btn_ensamblar.setText(_translate("SMARTWATCH_WINDOW", "ENSAMBLAR"))
         self.btn_graphviz.setText(_translate("SMARTWATCH_WINDOW", "VER GRÁFICO"))
-        # self.table_ensamblaje.setSortingEnabled(False)
-        # item = self.table_ensamblaje.horizontalHeaderItem(0)
-        # item.setText(_translate("SMARTWATCH_WINDOW", "TIEMPO"))
-        # item = self.table_ensamblaje.horizontalHeaderItem(1)
-        # item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 1"))
-        # item = self.table_ensamblaje.horizontalHeaderItem(2)
-        # item.setText(_translate("SMARTWATCH_WINDOW", "LINEA 2"))
-        # __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
-        # self.table_ensamblaje.setSortingEnabled(False)
-        # self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
         self.widget_proceso.setSortingEnabled(False)
         __sortingEnabled = self.widget_proceso.isSortingEnabled()
         self.widget_proceso.setSortingEnabled(False)
         self.widget_proceso.setSortingEnabled(__sortingEnabled)
-        __sortingEnabled = self.widget_components1.isSortingEnabled()
-        self.widget_components1.setSortingEnabled(False)
-        item = self.widget_components1.item(0)
-        item.setText(_translate("SMARTWATCH_WINDOW", "New Item"))
-        self.widget_components1.setSortingEnabled(__sortingEnabled)
-        self.lbl_componentnecesarios.setText(_translate("SMARTWATCH_WINDOW", "Componentes Necesarios"))
+        __sortingEnabled = widget_components1.isSortingEnabled()
+        widget_components1.setSortingEnabled(False)
+        item = widget_components1.item(0)
+        item.setText(_translate("SMARTWATCH_WINDOW", "Linea de Produccion"))
+        widget_components1.setSortingEnabled(__sortingEnabled)
+        self.lbl_componentnecesarios.setText(_translate("SMARTWATCH_WINDOW", "Tiempo de Ensamblaje"))
         self.lbl_procesorealizado.setText(_translate("SMARTWATCH_WINDOW", "Procesos Realizados"))
-        __sortingEnabled = self.widget_components2.isSortingEnabled()
-        self.widget_components2.setSortingEnabled(False)
-        item = self.widget_components2.item(0)
-        item.setText(_translate("SMARTWATCH_WINDOW", "New Item"))
-        self.widget_components2.setSortingEnabled(__sortingEnabled)
+        __sortingEnabled = widget_components2.isSortingEnabled()
+        widget_components2.setSortingEnabled(False)
+        item = widget_components2.item(0)
+        item.setText(_translate("SMARTWATCH_WINDOW", "Tiempo de Ensamblaje"))
+        widget_components2.setSortingEnabled(__sortingEnabled)
         self.menuCARGAR_ARCHIVOS.setTitle(_translate("SMARTWATCH_WINDOW", "CARGAR ARCHIVOS"))
         self.menuREPORTES.setTitle(_translate("SMARTWATCH_WINDOW", "REPORTES"))
         self.menuAYUDA.setTitle(_translate("SMARTWATCH_WINDOW", "AYUDA"))
         self.actionARCHIVO_DE_CONFIGURACI_N.setText(_translate("SMARTWATCH_WINDOW", "ARCHIVO DE CONFIGURACIÓN"))
         self.actionARCHIVO_DE_SIMULACI_N.setText(_translate("SMARTWATCH_WINDOW", "ARCHIVO DE SIMULACIÓN"))
-        self.actionREPORTE_DE_SIMULACI_N.setText(_translate("SMARTWATCH_WINDOW", "REPORTE DE SIMULACIÓN"))
+        self.actionREPORTE_DE_SIMULACI_N.setText(_translate("SMARTWATCH_WINDOW", "REPORTE DE SIMULACIÓN DEL PRODUCTO ACTUAL"))
         self.actionREPORTE_DE_COLA_DE_SECUENCIA.setText(_translate("SMARTWATCH_WINDOW", "REPORTE DE COLA DE SECUENCIA"))
         self.actionINFORMACI_N_PERSONAL.setText(_translate("SMARTWATCH_WINDOW", "INFORMACIÓN PERSONAL"))
         self.actionACERCA_DE.setText(_translate("SMARTWATCH_WINDOW", "ACERCA DE"))
 
     def load_fileconfig(self):
+        global combo
+        global combo2
         if self.loadedconfig:
             print("El archivo de configuracion ya se ha cargado")
         else:
             loadfile.loadfile(0)
             self.loadedconfig=True
+        combo.activated[str].connect(self.onChanged)
+        combo2.activated[str].connect(self.onChanged2)
+        self.progressBar.setProperty("value", 20)
 
     def load_filesimulacion(self):
         global lista_lista_productos
@@ -512,12 +496,13 @@ class Ui_SMARTWATCH_WINDOW(object):
         global combo2
         if self.loadedsimulacion:
             print("Cargando el archivo de simulación, otra vez...")
-            loadfile.loadfile(1)            
+            loadfile.loadfile(1)
         else:
             loadfile.loadfile(1)
             self.loadedsimulacion=True
-        combo.activated[str].connect(self.onChanged) 
-        combo2.activated[str].connect(self.onChanged2) 
+        combo.activated[str].connect(self.onChanged)
+        combo2.activated[str].connect(self.onChanged2)
+        self.progressBar.setProperty("value", 80)
 
     def onChanged(self, text):
         self.lbl_Producto.setText(text)
@@ -532,27 +517,96 @@ class Ui_SMARTWATCH_WINDOW(object):
     def ensamblarproductoseleccionado(self):
         global lista_lista_productos
         global lista_lista_ensambles
+        global tiempoimput
+        a=inputTiempo.App()
         nameproducto=self.lbl_Producto.text()
+        # print(tiempoimput)
         lista_lista_ensambles.llenarListaLineas(lista_lista_productos, nameproducto)
-        self.agregardatos_tabla()
-        # self.generarHTMLTokens()
+        self.agregardatos_tabla(tiempoimput, nameproducto)
+        self.lcd_time.display(tiempoimput)
+        self.agregardatos_processbar()
         print(nameproducto)
-
+        self.progressBar.setProperty("value", 30)
+    def reporteHtml(self):
+        try:
+            nameproducto=self.lbl_Producto.text()
+            Matriz_Resultados=loadfile.Matriz_Resultados
+            Matriz_Resultados.generarHTML_individual(nameproducto)
+        except :
+            a=mensaje.App()
+            a.initUI("No ha ensamblado ningun Producto, Verifique su ensamble")
     def creargraficographviz(self):
         global lista_lista_productos
         global lista_lista_ensambles
         nameproducto=self.lbl_Graficar.text()
         lista_lista_ensambles.generarGRAPHVIZ(lista_lista_productos, nameproducto)
         print(nameproducto)
+        self.progressBar.setProperty("value", 40)
+    
+    def crearReporteSecuencia(self):
+        global lista_lista_productos
+        global lista_lista_ensambles
+        global componentesambled
+        global lineasambled
+        global tiempoimput
+        # global lista_tiempos
+        loadfile.lista_tiempos.recorrer_tiempo()
+        try:
+            if lista_lista_productos !=None:
+                lineasambled,componentesambled=loadfile.lista_tiempos.buscar_tiempo(tiempoimput)
+                if componentesambled != None and lineasambled != None and tiempoimput != 0:
+                    nameproducto=self.lbl_Producto.text()
+                    lista_lista_ensambles.generarReporteSecuencia(lista_lista_productos,nameproducto,lineasambled,componentesambled)
+                    print(nameproducto)
+                    self.progressBar.setProperty("value", 40)
+                else:
+                    a=mensaje.App()
+                    a.initUI("Por Favor Ensamble un producto primero")
+            else:
+                a=mensaje.App()
+                a.initUI("Por Favor Ensamble un producto primero")
+        except:
+            a=mensaje.App()
+            a.initUI("Por Favor Ensamble un producto primero")
 
-    def agregardatos_tabla(self):
+
+    def agregardatos_processbar(self):
+        global lista_lista_productos
+        global lista_lista_ensambles
+        nameproducto=self.lbl_Producto.text()
+        listaensambles=lista_lista_ensambles.obtener_datos_mostrar(lista_lista_productos, nameproducto)
+        for p in range(len(listaensambles)):
+            item = QtWidgets.QListWidgetItem()
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            font = QtGui.QFont()
+            font.setBold(True)
+            font.setItalic(False)
+            font.setWeight(75)
+            font.setStrikeOut(False)
+            font.setStyleStrategy(QtGui.QFont.PreferDefault)
+            item.setFont(font)
+            icon3 = QtGui.QIcon()
+            icon3.addPixmap(QtGui.QPixmap("Codigo Fuente/images/Flecha_tesela.svg - Copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            item.setIcon(icon3)
+            brush = QtGui.QBrush(QtGui.QColor(178, 255, 96))
+            brush.setStyle(QtCore.Qt.Dense1Pattern)
+            item.setBackground(brush)
+            brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+            brush.setStyle(QtCore.Qt.NoBrush)
+            item.setForeground(brush)
+            
+            self.widget_proceso.addItem(item)
+            item = self.widget_proceso.item(p)
+            item.setText( str(listaensambles[p]))  
+
+    def agregardatos_tabla(self, tiempo, nameproducto):
         Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados
         Lista_Compo_Resultados=loadfile.Lista_Compo_Resultados
-        Matriz_Resultados=loadfile.Matriz_Resultados
+        Matriz_Resultados=productos.matriz()
         columnas=Lista_Linea_Resultados.cantidad_lineas()
         self.table_ensamblaje.setColumnCount(int(columnas)+1)
 
-        filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, 1))
+        filas=int(tiempo)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono ExtraBold")
@@ -563,6 +617,7 @@ class Ui_SMARTWATCH_WINDOW(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Codigo Fuente/images/clock-alarm-clock.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         item.setIcon(icon2)
+        # Lista_Linea_Resultados.bubblesort()
         item.setBackground(QtGui.QColor(128, 130, 249))
         self.table_ensamblaje.setHorizontalHeaderItem(0, item)
         item = self.table_ensamblaje.horizontalHeaderItem(0)
@@ -591,7 +646,7 @@ class Ui_SMARTWATCH_WINDOW(object):
             item = self.table_ensamblaje.item(f, 0)
             item.setText(f"{seconds} seg. ")
             seconds+=1
-
+        
         while cont <= columnast  :
             #aquí iria el ordenamiento burbuja de las lineas
             lineatext=Lista_Linea_Resultados.buscar_lineapor_id(cont-1)
@@ -630,16 +685,43 @@ class Ui_SMARTWATCH_WINDOW(object):
                     self.table_ensamblaje.setItem(c, cont, item)
                     item = self.table_ensamblaje.item(c, cont)
                     item.setText(str(temp.componente))
+                    # Matriz_Resultados.insert(cont, c, str(temp.componente))
+                    temp=temp.abajo
+            cont+=1
+        # self.table_ensamblaje.sortItems(2, AscendingOrder)
+        # Lista_Linea_Resultados.bubblesort()
+        cont=1
+        filas=int(Lista_Compo_Resultados.cantidad_componente(Lista_Linea_Resultados, 1))
+        while cont <= columnast  :
+            #aquí iria el ordenamiento burbuja de las lineas
+            lineatext=Lista_Linea_Resultados.buscar_lineapor_id(cont-1)
+            filast=Lista_Compo_Resultados.return_idycomponente(Lista_Linea_Resultados, cont-1)
+            temp=filast.abajo
+            for c in range(filas):
+                if temp != None:
                     Matriz_Resultados.insert(cont, c, str(temp.componente))
                     temp=temp.abajo
             cont+=1
+        self.lbl_optimize.setText(f" TIEMPO APROXIMADO : {filas-1}")
 
         self.table_ensamblaje.setSortingEnabled(False)
         __sortingEnabled = self.table_ensamblaje.isSortingEnabled()
         self.table_ensamblaje.setSortingEnabled(False)
         self.table_ensamblaje.setSortingEnabled(__sortingEnabled)
-        Matriz_Resultados.generarHTML_individual()
+        loadfile.Matriz_Resultados=Matriz_Resultados
+        Matriz_Resultados.generarHTML_individual(nameproducto)
+        Matriz_Resultados.writexmlsalida("ProductoIndividual", nameproducto)
 
+    def infopersonal(self):
+        a=mensaje.App()
+        a.initUI("Nombre Desarrollador: Alvaro Emmanuel Socop Pérez\nCarne: 202000194\nCurso: IPC2\nSección: E\n")
+        self.progressBar.setProperty("value", 100)
+    
+    def acercade(self):
+        a=mensaje.App()
+        a.initUI("Aplicación desarrollada en python de La empresa Digital Intelligence, S. A que puede puede construir cualquier producto ensamblando automáticamente los componentes (partes) que lo conforman.\nFlujo de actualización:Early Access\nSistema:Windows 10 64-bit\nV1 (core: v.1.3)\nTipo de instalación: Para el usuario actual\n Información legal\nALUF\nPolítica de privacidad\nTérminos de servicio")
+
+  
 
     # def generarHTMLindividual(self):
     #     Lista_Linea_Resultados=loadfile.Lista_Linea_Resultados

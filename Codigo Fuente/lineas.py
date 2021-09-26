@@ -63,3 +63,48 @@ class Lista_dobleenlazada_lineas:
             else:
                 linea_actual=linea_actual.siguiente
         return False
+
+#! Lista de donde se guarda la Línea y el valor del tiempo de ensamblaje
+class NODO_lineaensamblajeTime:
+    def __init__(self,  linea = None, tiempo=None , siguiente = None):
+        self.linea=linea
+        self.tiempo=tiempo
+        self.siguiente = siguiente
+
+class lista_ComponenteDeLinea:
+    def __init__(self):
+        self.cabezalinea2 = None
+        self.siguiente=None
+        self.anterior=None
+        self.abajo=None
+        self.arriba=None
+
+    def insertar_ComponenteDeLinea(self, linea, tiempo):
+        if self.cabezalinea2 is None:
+            self.cabezalinea2=NODO_lineaensamblajeTime(linea=linea, tiempo=tiempo)
+            return
+        linea_actual=self.cabezalinea2
+        while linea_actual.siguiente:
+            linea_actual=linea_actual.siguiente
+        linea_actual.siguiente=NODO_lineaensamblajeTime(linea=linea, tiempo=tiempo)
+
+    def recorrer_ComponenteDeLinea(self):
+        if self.cabezalinea2 is None:
+            print("List has no element")
+            return
+        linea_actual=self.cabezalinea2
+        print("La línea: ", linea_actual.linea, "   tiempo : ", linea_actual.tiempo,"-->")
+        while linea_actual.siguiente:
+            linea_actual=linea_actual.siguiente
+            print("La línea: ", linea_actual.linea, "   tiempo : ", linea_actual.tiempo,"-->")
+
+    def buscar_ComponenteDeLinea(self, linea):
+        linea_actual=self.cabezalinea2
+        if linea_actual is None:
+            return "estavacio"
+        while linea_actual is not None:
+            if int(linea_actual.linea)  ==int(linea) :
+                return int(linea_actual.tiempo)
+            else:
+                linea_actual=linea_actual.siguiente
+        return False

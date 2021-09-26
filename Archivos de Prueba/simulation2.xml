@@ -1,0 +1,16 @@
+<Simulacion>
+        <Nombre>
+        Simulacion 1
+        </Nombre>
+        <ListadoProductos>
+                <Producto>
+                        COMPUTACORE
+                </Producto>
+                <Producto>
+                        ROPERO
+                </Producto>
+                <Producto>
+                        ANILLO
+                </Producto>
+        </ListadoProductos>
+</Simulacion>

@@ -1,0 +1,16 @@
+<Simulacion>
+        <Nombre>
+        Simulacion 1
+        </Nombre>
+        <ListadoProductos>
+                <Producto>
+                        RELOJ DE MANO
+                </Producto>
+                <Producto>
+                        ANILLO
+                </Producto>
+                <Producto>
+                        ROPERO
+                </Producto>
+        </ListadoProductos>
+</Simulacion>

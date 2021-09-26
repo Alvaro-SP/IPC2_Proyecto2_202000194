@@ -1,0 +1,75 @@
+
+<Maquina>
+        <CantidadLineasProduccion>6</CantidadLineasProduccion>
+        <ListadoLineasProduccion>
+                <LineaProduccion>
+                        <Numero>1</Numero>
+                        <CantidadComponentes>8</CantidadComponentes>
+                        <TiempoEnsamblaje>5</TiempoEnsamblaje>
+                </LineaProduccion>
+                <LineaProduccion>
+                        <Numero>2</Numero>
+                        <CantidadComponentes>6</CantidadComponentes>
+                        <TiempoEnsamblaje>4</TiempoEnsamblaje>
+                </LineaProduccion>
+                <LineaProduccion>
+                        <Numero>3</Numero>
+                        <CantidadComponentes>5</CantidadComponentes>
+                        <TiempoEnsamblaje>3</TiempoEnsamblaje>
+                </LineaProduccion>
+                <LineaProduccion>
+                        <Numero>4</Numero>
+                        <CantidadComponentes>8</CantidadComponentes>
+                        <TiempoEnsamblaje>7</TiempoEnsamblaje>
+                </LineaProduccion>
+                <LineaProduccion>
+                        <Numero>5</Numero>
+                        <CantidadComponentes>9</CantidadComponentes>
+                        <TiempoEnsamblaje>6</TiempoEnsamblaje>
+                </LineaProduccion>
+                <LineaProduccion>
+                        <Numero>6</Numero>
+                        <CantidadComponentes>10</CantidadComponentes>
+                        <TiempoEnsamblaje>2</TiempoEnsamblaje>
+                </LineaProduccion>
+        </ListadoLineasProduccion>
+        <ListadoProductos>
+                <Producto>
+                        <nombre>
+                                RELOJ DE MANO
+                        </nombre>
+                        <elaboracion>
+                                L1pC4p L2=pC3p L4C2
+                                 L6pC7p L5pC1p 
+                                 L6pC8p
+
+                                  L4#pC5p
+                                  L3pC3p L2pC5p
+                        </elaboracion>
+                </Producto>
+                <Producto>
+                        <nombre>
+                                ANILLO
+                        </nombre>
+                        <elaboracion>
+                                L2pC3p L1pC1p L5pC8p L2pC1p L1pC8p L3pC5p
+                        </elaboracion>
+                </Producto>
+                <Producto>
+                        <nombre>
+                                ROPERO
+                        </nombre>
+                        <elaboracion>
+                                L5pC4p L1pC3p L3pC4p L1pC5p L2pC1p L1pC6p L1pC7p L5pC2p L4pC8p L2pC6p L1pC2p L3pC1p
+                        </elaboracion>
+                </Producto>
+                <Producto>
+                        <nombre>
+                                COMPUTACORE
+                        </nombre>
+                        <elaboracion>
+                                L1pC7p L5pC2p L4pC8p L2pC6p L1pC2p L3pC1p L2pC3p L1pC1p L5pC8p L2pC1p L1pC8p L3pC5p
+                        </elaboracion>
+                </Producto>
+        </ListadoProductos>
+</Maquina>

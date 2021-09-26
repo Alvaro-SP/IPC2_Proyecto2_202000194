@@ -1,0 +1,186 @@
+<SalidaSimulacion>
+  <Nombre>simulacion 1</Nombre>
+<ListadoProductos>
+    <Producto>
+      <Nombre>product 1</Nombre>
+    <TiempoTotal>25</TiempoTotal>
+    <ElaboracionOptima>
+        <Tiempo NoSegundo="1">
+          <LineaEnsamblaje NoLinea="1">Mover Brazo-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">Mover Brazo-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">Mover Brazo-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">Mover Brazo-C1</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="2">
+          <LineaEnsamblaje NoLinea="1">Mover Brazo-C2</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C2</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">Mover Brazo-C2</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">Mover Brazo-C2</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="3">
+          <LineaEnsamblaje NoLinea="1">Mover Brazo-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">Mover Brazo-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">Mover Brazo-C3</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="4">
+          <LineaEnsamblaje NoLinea="1">Mover Brazo-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">Mover Brazo-C4</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="5">
+          <LineaEnsamblaje NoLinea="1">ENSAMBLAR-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C5</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">Mover Brazo-C5</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="6">
+          <LineaEnsamblaje NoLinea="1">ENSAMBLAR-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C6</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="7">
+          <LineaEnsamblaje NoLinea="1">ENSAMBLAR-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="8">
+          <LineaEnsamblaje NoLinea="1">ENSAMBLAR-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="9">
+          <LineaEnsamblaje NoLinea="1">ENSAMBLAR-C4</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="10">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">ENSAMBLAR-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="11">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">ENSAMBLAR-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="12">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="13">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="14">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="15">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="16">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="17">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">ENSAMBLAR-C1</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="18">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">ENSAMBLAR-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="19">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">Mover Brazo-C7</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">ENSAMBLAR-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="20">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">ENSAMBLAR-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="21">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">ENSAMBLAR-C3</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">No hacer nada</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="22">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">ENSAMBLAR-C5</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="23">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">ENSAMBLAR-C5</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="24">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">ENSAMBLAR-C5</LineaEnsamblaje>
+        </Tiempo>
+      <Tiempo NoSegundo="25">
+          <LineaEnsamblaje NoLinea="1">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="6">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="5">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="3">No hacer nada</LineaEnsamblaje>
+        <LineaEnsamblaje NoLinea="2">ENSAMBLAR-C5</LineaEnsamblaje>
+        </Tiempo>
+      </ElaboracionOptima>
+    </Producto>
+  </ListadoProductos>
+</SalidaSimulacion>
